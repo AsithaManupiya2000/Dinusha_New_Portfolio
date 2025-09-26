@@ -81,7 +81,7 @@ p {
 
 .btn {
     display: inline-block;
-    background: var();
+    background: var(--green);
     color: var(--white) !important;
     border: 2px solid var(--green);
     padding: 12px 30px;
@@ -137,7 +137,7 @@ nav {
 .logo {
     font-size: 1.8rem;
     font-weight: bold;
-    color: var(--green);
+    color: var(--white);
 }
 
 .nav-links {
@@ -150,7 +150,7 @@ nav {
 }
 
 .nav-links a {
-    color: var(--white);
+    color: var(--gray);
     text-decoration: none;
     font-size: 1rem;
     transition: color 0.3s;
@@ -197,7 +197,7 @@ nav {
 
 /* Hero Section */
 .hero {
-    padding: 180px 0 100px;
+    padding: 80px 0 10px;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -207,15 +207,17 @@ nav {
 }
 
 .hero h1 {
-    font-size: 6.5rem !important;
-    font-weight: 800 !important;
+    font-size: 5rem !important;
+    font-weight: 600 !important;
+    max-width: 60%;
 }
+
 .hero-frame {
     position: absolute;
     top: 40px;
     left: 40px;
     right: 40px;
-    bottom: 40px;
+    
     z-index: 1;
     pointer-events: none;
 }
@@ -230,18 +232,18 @@ nav {
 }
 
 .hero-text-container {
-    flex: 0 0 50%;
-    max-width: 50%;
+    flex: 0 0 60%;
+    max-width: 60%;
     position: relative;
-    z-index: 3;
+    z-index: 4; 
     padding-right: 40px;
 }
 
 .hero-image-container {
-    flex: 0 0 50%;
-    max-width: 60%;
-    top: 40px;
+    flex: 0 0 40%;
+    max-width: 40%;
     position: relative;
+    left: -100px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -251,39 +253,35 @@ nav {
 .hero-image {
     width: 100%;
     max-width: 600px;
-    height: 85vh;
-    position: absolute;
+    height: 120vh;
+    position: relative; 
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
+    mix-blend-mode: multiply;
 }
 
 .hero-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    border-right: none;
+    object-fit: contain; /* Changed from cover to contain to prevent cropping */
     object-position: top center;
     filter: brightness(1.05) contrast(1.1);
+    mix-blend-mode: multiply;
 }
 
-/* Gradient overlay to blend image with text */
+/* Remove the gradient overlay since text will be on top */
 .hero-text-container::after {
-    content: '';
-    position: relative;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 100%;
-    background: linear-gradient(to left, var(--dark-blue) 0%, transparent 100%);
-    z-index: 2;
-    pointer-events: none;
+    display: none;
 }
 
 .hero-content h1 {
     font-size: 3.8rem;
     margin-bottom: 10px;
     color: var(--white);
+    max-width: 100%;
+    position: relative;
+    z-index: 5;
 }
 
 .hero-content .subheading {
@@ -291,6 +289,9 @@ nav {
     color: var(--green);
     margin-bottom: 30px;
     font-weight: 500;
+    max-width: 60%;
+    position: relative;
+    z-index: 5;
 }
 
 .hero-content p {
@@ -299,19 +300,24 @@ nav {
     font-size: 1.2rem;
     line-height: 1.8;
     position: relative;
-    z-index: 3;
+    z-index: 5;
+}
+
+.hero-buttons {
+    position: relative;
+    z-index: 5;
 }
 
 /* Responsive styles */
 @media (max-width: 1200px) {
     .hero-text-container {
-        flex: 0 0 55%;
-        max-width: 55%;
+        flex: 0 0 60%;
+        max-width: 60%;
     }
     
     .hero-image-container {
-        flex: 0 0 45%;
-        max-width: 45%;
+        flex: 0 0 40%;
+        max-width: 40%;
     }
     
     .hero-image {
@@ -320,7 +326,11 @@ nav {
     }
 
     .hero-image img {
-      object-position: top center;
+      object-fit: contain;
+    }
+    
+    .hero-content .subheading {
+        max-width: 80%;
     }
 }
 
@@ -338,10 +348,7 @@ nav {
         padding-right: 0;
         text-align: center;
         margin-bottom: 40px;
-    }
-    
-    .hero-text-container::after {
-        display: none;
+        z-index: 4;
     }
     
     .hero-image {
@@ -349,19 +356,22 @@ nav {
         height: 60vh;
         justify-content: center;
         align-items: flex-start;
+        position: relative;
     }
     
     .hero-image img {
-        position: relative;
+        object-fit: contain;
         object-position: top center;
     }
     
     h1 {
         font-size: 2.8rem;
+        max-width: 100% !important;
     }
     
     .hero-content .subheading {
         font-size: 1.3rem;
+        max-width: 100%;
     }
     
     .hero-content p {
@@ -380,10 +390,12 @@ nav {
     
     h1 {
         font-size: 2.5rem;
+        max-width: 100% !important;
     }
     
     .hero-content .subheading {
         font-size: 1.2rem;
+        max-width: 100%;
     }
     
     .hero::before, .hero::after, .hero-frame {
@@ -414,6 +426,7 @@ nav {
     }
 
     .hero-image img {
+        object-fit: contain;
         object-position: top center; 
     }
 }
@@ -499,6 +512,58 @@ nav {
     font-weight: 500;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
+
+/* Story section */
+.story {
+    background-color: var(--white);
+}
+
+.story .container {
+    width: 100%;
+    height: 100%;
+}
+
+.story-heading {
+    display: grid;
+    justify-content: center;
+    border-bottom: 1px dotted var(--black);
+}
+
+.story-heading h1 {
+    color: var(--black);
+    font-size: 3.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.story-heading h3 {
+    color: var(--black);
+    font: italic !important;
+}
+
+.story-section-content {
+    background: url(Assests/hp-sec04-image.webp);
+    background-size:cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 120vh;
+    margin-top: 40px;
+}
+
+.story-section-content h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    display: flex;
+    padding-left: 50%;
+}
+
+.story-section-content p {
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    padding-left: 50%;
+}
+
 
 /* SEO Solutions Section - Storytelling Style */
 .seo-solutions {
@@ -1315,15 +1380,31 @@ nav {
     margin-top: 50px;
 }
 
-.blog-grid .btn {
-    color: var(--black) !important;
+#blog-btn {
+  background-color: var(--green);
+  color: var(--white) !important;
+  border: 2px solid var(--green);
+  padding: 12px 30px;
+  border-radius: 4px;
+  display: inline-block;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+/* Optional hover effect */
+#blog-btn:hover {
+  background-color: rgba(172,145,105,0.95); 
+  color: var(--white) !important;
+  transform: translateY(-3px);
 }
 
 .blog-card {
     background-color: rgba(255, 255, 255, 0.05);
     border-radius: 10px;
     overflow: hidden;
-    border: 2px solid var(--light-gray);
+    border: 2px solid var(--black);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
