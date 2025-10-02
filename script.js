@@ -1,36 +1,55 @@
 // JavaScript Code
 document.addEventListener('DOMContentLoaded', function() {
-// Mobile menu toggle
+// Mobile menu toggle with improved functionality
 const hamburger = document.querySelector('.hamburger');
 const navLinks = document.querySelector('.nav-links');
+const body = document.body;
 
 hamburger.addEventListener('click', function() {
     hamburger.classList.toggle('active');
     navLinks.classList.toggle('active');
+    body.classList.toggle('menu-open');
 });
 
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if(targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if(targetElement) {
-            window.scrollTo({
-                top: targetElement.offsetTop - 80,
-                behavior: 'smooth'
-            });
-            
-            // Close mobile menu if open
-            hamburger.classList.remove('active');
-            navLinks.classList.remove('active');
-        }
+// Close mobile menu when clicking on links
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', function() {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+        body.classList.remove('menu-open');
     });
 });
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', function(event) {
+    const isClickInsideNav = navLinks.contains(event.target);
+    const isClickOnHamburger = hamburger.contains(event.target);
     
+    if (!isClickInsideNav && !isClickOnHamburger && navLinks.classList.contains('active')) {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+        body.classList.remove('menu-open');
+    }
+});
+
+// Close mobile menu on escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape' && navLinks.classList.contains('active')) {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+        body.classList.remove('menu-open');
+    }
+});
+
+// Handle window resize
+window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+        body.classList.remove('menu-open');
+    }
+});
+
 // Header scroll effect
 window.addEventListener('scroll', function() {
     const header = document.querySelector('header');
