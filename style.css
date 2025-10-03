@@ -1,15 +1,14 @@
-/* CSS Variables */
 :root {
-  --dark-blue: #1e2a44;     /* Rich navy, used sparingly (hero, expertise, footer) */
-  --dark-green: #2c3e50;    /* Muted dark teal/green for depth */
-  --light-blue: #7a93c9;    /* Soft blue for gradients, highlights, subtle backgrounds */
-  --gold: #c9a227;          /* Muted gold accent for CTAs, icons, highlights */
-  --white: #ffffff;         /* Pure white for main content readability */
-  --gray: #6b7280;          /* Neutral mid-gray for body text */
-  --light-gray: #f1f5f9;    /* Soft gray for section backgrounds */
-  --black: #0f172a;         /* Almost black for headings */
-  --cream: #f5f0e6;         /* Warm off-white for alternating sections */
-  --charcoal: #2d3748;      /* Strong neutral for headings/text */
+  --dark-blue: #28344a;     /* Muted navy with gray undertone – less harsh */
+  --dark-green: #3a4f5f;    /* Calm earthy green-teal */
+  --light-blue: #8fa4c4;    /* Softer, dusty blue */
+  --gold: #bfa25a;          /* Muted warm gold, less shiny */
+  --white: #ffffff;         /* Pure white – keep for readability */
+  --gray: #7d8590;          /* Softer neutral gray */
+  --light-gray: #e9ecef;    /* Gentle light gray for backgrounds */
+  --black: #1c1f26;         /* Softer near-black for headings */
+  --cream: #f2ebe3;         /* Slightly richer cream, warm but subtle */
+  --charcoal: #3a3f4b;      /* Softer charcoal with blue-gray undertone */
 }
 
 
@@ -508,6 +507,8 @@ nav {
 .seo-solutions {
     background-color: var(--dark-blue);
     padding: 100px 0;
+    outline: 3px solid var(--gold);
+    outline-offset: -2vw;
 }
 
 .solutions-story {
@@ -720,6 +721,8 @@ nav {
     padding: 100px 0;
     background-color: var(--dark-blue);
     position: relative;
+    outline: 3px solid var(--gold);
+    outline-offset: -2vw;
 }
 
 .expertise-content {
@@ -892,6 +895,8 @@ nav {
 .case-studies-section {
     background-color: var(--dark-blue);
     padding: 100px 0;
+    outline: 3px solid var(--gold);
+    outline-offset: -2vw;
 }
 
 .case-studies-section h2 {
