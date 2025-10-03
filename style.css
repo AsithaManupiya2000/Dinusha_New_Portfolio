@@ -620,8 +620,9 @@ nav {
 .experience-badge {
     display: inline-flex;
     align-items: center;
-    background: var(--gold);
-    color: var(--dark-blue);
+    background: var(--white);
+    color: var(--gold);
+    border: 2px solid var(--gold);
     padding: 10px 20px;
     border-radius: 50px;
     margin-bottom: 20px;
@@ -649,6 +650,11 @@ nav {
 .about-text strong {
     color: var(--dark-blue);
     font-weight: 700;
+}
+
+.about-btn {
+    display: flex;
+    
 }
 
 .profile-image {
@@ -1378,8 +1384,25 @@ footer {
 /* Medium devices (tablets, 992px and down) */
 @media (max-width: 992px) {
     .btn-nav {
-        width: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+        min-width: 50px;
+        height: 50px;
+        padding: 12px 20px;
+        border: none;
+        background: #D4AF37;
+        border-radius: 8px;
+        cursor: pointer;
+        white-space: nowrap;
     }
+    
+    .btn-nav i {
+        font-size: 24px;
+        color: #1a1a2e;
+    }
+
     .hero-container {
         flex-direction: column;
         text-align: center;
@@ -1426,21 +1449,32 @@ footer {
     
     .expertise-image {
         position: relative;
-        flex: 0 0 300px;
+        flex: 0 0 auto;
         width: 100%;
-        height: 300px;
+        height: 400px; 
         left: 0;
         top: 0;
+        margin: 0;
+    }
+    
+    .expertise-image img {
+        margin-left: 10%;
+        width: 20vh;
+        height: 50vh;
+        object-fit: fit-content; 
     }
     
     .expertise-info {
         flex: 1;
         margin-left: 0;
-        margin-top: -3px;
+        margin-top: 0;
         padding: 40px 20px;
+        width: 100%;
     }
     
     .expertise-grid {
+        margin: 0 20% 0 20%;
+        width: 70%;
         grid-template-columns: 1fr;
         gap: 20px;
     }
@@ -1470,7 +1504,7 @@ footer {
     .footer-content {
         grid-template-columns: 1fr 1fr;
     }
-    
+
     .story-point {
         flex-direction: column;
         text-align: center;
@@ -1483,6 +1517,13 @@ footer {
     
     .story-icon {
         margin: 0 0 25px 0;
+        flex: 0 0 80px; 
+        height: 80px; 
+        width: 80px; 
+    }
+    
+    .story-icon i {
+        font-size: 2rem; 
     }
 }
 
@@ -1490,13 +1531,13 @@ footer {
 @media (max-width: 768px) {
     .nav-links {
         display: none;
-        flex-direction: column-reverse;
+        flex-direction: column;
         position: absolute;
         top: 70px;
         left: 0;
         width: 100%;
         background-color: var(--dark-blue);
-        padding: 15px;
+        padding: 20px;
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     }
     
@@ -1505,9 +1546,18 @@ footer {
     }
     
     .nav-links li {
-        margin: 15px 0;
+        margin: 12px 0;
+        width: 100%;
+        text-align: center;
     }
-
+    
+    .btn-nav {
+        display: inline-block;
+        padding: 12px 24px;
+        width: auto;
+        margin: 10px auto;
+    }
+    
     .hamburger {
         display: flex;
     }
