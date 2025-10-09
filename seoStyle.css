@@ -112,10 +112,16 @@ p {
 }
 
 .btn-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
     background-color: var(--gold);
-    color: var(--dark-blue);
-    padding: 5px 15px;
-    border-radius: 4px;
+    color: var(--black) !important;
+    min-width: 70px !important;
+    height: 50px !important;
+    border-radius: 8px !important;
+    padding: 15px 35px !important;
     font-weight: 600;
 }
 
@@ -158,7 +164,7 @@ nav {
 }
 
 .nav-links a {
-    color: var(--gray);
+    color: var(--light-gray);
     text-decoration: none;
     font-size: 1rem;
     transition: color 0.3s;
@@ -166,9 +172,6 @@ nav {
     font-weight: 500;
 }
 
-.btn-nav {
-    color:  var(--black) !important;
-}
 
 .nav-links a::after {
     content: '';
