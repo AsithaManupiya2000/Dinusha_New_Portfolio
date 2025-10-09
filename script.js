@@ -282,6 +282,8 @@ document.addEventListener('DOMContentLoaded', function() {
     highlightActiveNav();
 });
 
+
+
 // Add some custom styles for loading state
 /* const style = document.createElement('style');
 style.textContent = `
@@ -573,3 +575,155 @@ const existingStyle = document.querySelector('style');
 if(existingStyle) {
     existingStyle.textContent += additionalStyles;
 }
+
+// Animate stats counter
+    const statNumbers = document.querySelectorAll('.stat-number');
+    const resultNumbers = document.querySelectorAll('.result-number');
+    
+    const allCounterElements = [...statNumbers, ...resultNumbers];
+    
+    function isInViewport(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+    
+    function animateCounter(element) {
+        try {
+            const targetValue = element.getAttribute('data-target');
+            
+            if (!targetValue) {
+                console.warn('Missing data-target attribute for element:', element);
+                return;
+            }
+            
+            const target = parseInt(targetValue);
+            if (isNaN(target)) {
+                console.warn('Invalid data-target value:', targetValue);
+                return;
+            }
+            
+            const duration = 2000;
+            const step = Math.max(target / (duration / 16), 1);
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                    element.textContent = target.toString();
+                } else {
+                    element.textContent = Math.floor(current).toString();
+                }
+            }, 16);
+            
+            element.classList.add('animated');
+        } catch (error) {
+            console.error('Error animating counter:', error);
+        }
+    }
+    
+    function handleScroll() {
+        allCounterElements.forEach(element => {
+            if (isInViewport(element) && !element.classList.contains('animated')) {
+                animateCounter(element);
+            }
+        });
+    }
+    
+    // Initial check
+    handleScroll();
+    
+    // Check on scroll
+    window.addEventListener('scroll', handleScroll);
+
+    // Enhanced animations for WordPress page
+    const elementsToAnimate = document.querySelectorAll('.advantage-card, .approach-item, .service-card, .case-study, .feature');
+    
+    const wordpressObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    elementsToAnimate.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        wordpressObserver.observe(el);
+    });
+
+    // Staggered animation delays
+    const advantageCards = document.querySelectorAll('.advantage-card');
+    advantageCards.forEach((card, index) => {
+        card.style.transitionDelay = `${index * 0.1}s`;
+    });
+    
+    const serviceCards = document.querySelectorAll('.services-grid .service-card');
+    serviceCards.forEach((card, index) => {
+        card.style.transitionDelay = `${index * 0.1}s`;
+    });
+
+    // Enhanced hover effects
+    const interactiveCards = document.querySelectorAll('.advantage-card, .service-card, .case-study');
+    interactiveCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+
+    // Platform comparison animation
+    const platformComparison = document.querySelector('.platform-comparison');
+    if(platformComparison) {
+        const platformObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    platformComparison.style.transform = 'translateY(0)';
+                    platformComparison.style.opacity = '1';
+                }
+            });
+        }, { threshold: 0.3 });
+        
+        platformComparison.style.opacity = '0';
+        platformComparison.style.transform = 'translateY(30px)';
+        platformComparison.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        platformObserver.observe(platformComparison);
+    }
+
+    // Form input validation
+    const formInputs = document.querySelectorAll('#wordpress-consultation-form input, #wordpress-consultation-form select, #wordpress-consultation-form textarea');
+    
+    formInputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if(this.value.trim() === '' && this.hasAttribute('required')) {
+                this.classList.add('error');
+            } else {
+                this.classList.remove('error');
+                
+                if(this.type === 'email' && this.value.trim() !== '') {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if(!emailRegex.test(this.value)) {
+                        this.classList.add('error');
+                    }
+                }
+            }
+        });
+        
+        input.addEventListener('input', function() {
+            if(this.value.trim() !== '') {
+                this.classList.remove('error');
+            }
+        });
+    });
