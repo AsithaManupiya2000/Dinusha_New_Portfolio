@@ -727,3 +727,343 @@ if(existingStyle) {
             }
         });
     });
+
+    // Memory Lane Animations
+document.addEventListener('DOMContentLoaded', function() {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    
+    const timelineObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('animated');
+                }, index * 300);
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    timelineItems.forEach(item => {
+        timelineObserver.observe(item);
+    });
+    
+    // Add hover effects for benefit cards
+    const benefitCards = document.querySelectorAll('.benefit-card');
+    benefitCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+    
+    // Add click effects for skill tags
+    const skillTags = document.querySelectorAll('.skill-tag');
+    skillTags.forEach(tag => {
+        tag.addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+    });
+});
+
+// AI SEO Page Specific JavaScript - Add to existing script.js
+
+// AI Consultation Form Handling
+const aiConsultationForm = document.getElementById('ai-seo-consultation-form');
+if(aiConsultationForm) {
+    aiConsultationForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = new FormData(this);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const website = formData.get('website');
+        const businessType = formData.get('business-type');
+        const goals = formData.get('goals');
+        
+        // Simple validation
+        if(!name || !email || !website || !businessType || !goals) {
+            showNotification('Please fill in all required fields.', 'error');
+            return;
+        }
+        
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!emailRegex.test(email)) {
+            showNotification('Please enter a valid email address.', 'error');
+            return;
+        }
+        
+        // Show loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Processing...';
+        submitBtn.disabled = true;
+        
+        // Simulate form submission
+        setTimeout(() => {
+            showNotification('Thank you! Your AI SEO audit request has been received. We\'ll contact you within 24 hours.', 'success');
+            aiConsultationForm.reset();
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+            
+            // Track conversion
+            if(typeof gtag !== 'undefined') {
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-YOUR_CONVERSION_ID/ai_seo_audit_request',
+                    'value': 1.0,
+                    'currency': 'USD'
+                });
+            }
+        }, 2000);
+    });
+}
+
+// AI Stats Counter Animation
+const aiStatNumbers = document.querySelectorAll('.ai-seo-stats .result-number');
+
+function animateAIStats() {
+    aiStatNumbers.forEach(element => {
+        if (isInViewport(element) && !element.classList.contains('animated')) {
+            animateCounter(element);
+        }
+    });
+}
+
+// Initial check for AI stats
+animateAIStats();
+
+// Check AI stats on scroll
+window.addEventListener('scroll', animateAIStats);
+
+
+
+// AI Implementation Stories Animation
+document.addEventListener('DOMContentLoaded', function() {
+    const storyItems = document.querySelectorAll('.story-item');
+    
+    const storyObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, index * 300);
+            }
+        });
+    }, { 
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    });
+    
+    storyItems.forEach(item => {
+        storyObserver.observe(item);
+    });
+    
+    // Stats counter animation for story items
+    const statNumbers = document.querySelectorAll('.stat-number');
+    
+    function animateStoryStats() {
+        statNumbers.forEach(element => {
+            if (isInViewport(element) && !element.classList.contains('animated')) {
+                animateCounter(element);
+            }
+        });
+    }
+    
+    // Initial check
+    animateStoryStats();
+    
+    // Check on scroll
+    window.addEventListener('scroll', animateStoryStats);
+    
+    // Enhanced hover effects
+    storyItems.forEach(item => {
+        const visualContainer = item.querySelector('.visual-container');
+        const storyContent = item.querySelector('.story-content');
+        
+        item.addEventListener('mouseenter', function() {
+            visualContainer.style.transform = 'scale(1.05)';
+            storyContent.style.transform = 'translateY(-10px)';
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            visualContainer.style.transform = 'scale(1)';
+            storyContent.style.transform = 'translateY(0)';
+        });
+    });
+    
+    // Helper function to check if element is in viewport
+    function isInViewport(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+    
+    // Helper function to animate counters
+    function animateCounter(element) {
+        try {
+            const targetValue = element.getAttribute('data-target');
+            
+            if (!targetValue) {
+                console.warn('Missing data-target attribute for element:', element);
+                return;
+            }
+            
+            const target = parseInt(targetValue);
+            if (isNaN(target)) {
+                console.warn('Invalid data-target value:', targetValue);
+                return;
+            }
+            
+            const duration = 1500;
+            const step = Math.max(target / (duration / 16), 1);
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                    element.textContent = target.toString();
+                } else {
+                    element.textContent = Math.floor(current).toString();
+                }
+            }, 16);
+            
+            element.classList.add('animated');
+        } catch (error) {
+            console.error('Error animating counter:', error);
+        }
+    }
+});
+
+// Add smooth scrolling for section links
+document.querySelectorAll('a[href^="#how-ai-works"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            const headerHeight = document.querySelector('header').offsetHeight;
+            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+
+// AI Benefits Cards Animation
+const benefitCards = document.querySelectorAll('.benefit-card, .capability');
+const benefitsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, { threshold: 0.1 });
+
+benefitCards.forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(30px)';
+    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    benefitsObserver.observe(card);
+});
+
+// Staggered animation for benefit cards
+benefitCards.forEach((card, index) => {
+    card.style.transitionDelay = `${index * 0.1}s`;
+});
+
+// Offering Items Animation
+const offeringItems = document.querySelectorAll('.offering-item');
+const offeringObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateX(0)';
+            }, index * 200);
+        }
+    });
+}, { threshold: 0.1 });
+
+offeringItems.forEach(item => {
+    item.style.opacity = '0';
+    item.style.transform = 'translateX(-20px)';
+    item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    offeringObserver.observe(item);
+});
+
+// Form input validation for AI consultation form
+const aiFormInputs = document.querySelectorAll('#ai-seo-consultation-form input, #ai-seo-consultation-form select, #ai-seo-consultation-form textarea');
+
+aiFormInputs.forEach(input => {
+    input.addEventListener('blur', function() {
+        if(this.value.trim() === '' && this.hasAttribute('required')) {
+            this.classList.add('error');
+        } else {
+            this.classList.remove('error');
+            
+            if(this.type === 'email' && this.value.trim() !== '') {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if(!emailRegex.test(this.value)) {
+                    this.classList.add('error');
+                }
+            }
+            
+            if(this.type === 'url' && this.value.trim() !== '') {
+                try {
+                    new URL(this.value);
+                } catch (_) {
+                    this.classList.add('error');
+                }
+            }
+        }
+    });
+    
+    input.addEventListener('input', function() {
+        if(this.value.trim() !== '') {
+            this.classList.remove('error');
+        }
+    });
+});
+
+// Add AI-specific error styles
+const aiErrorStyles = `
+    #ai-seo-consultation-form input.error,
+    #ai-seo-consultation-form select.error,
+    #ai-seo-consultation-form textarea.error {
+        border-color: #ef4444 !important;
+        box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+    }
+    
+    .implementation-step,
+    .benefit-card,
+    .capability,
+    .offering-item {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    
+    .process-step {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+`;
+
+// Append AI error styles
+const aiStyleElement = document.createElement('style');
+aiStyleElement.textContent = aiErrorStyles;
+document.head.appendChild(aiStyleElement);
