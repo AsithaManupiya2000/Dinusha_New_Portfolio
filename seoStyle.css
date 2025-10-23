@@ -234,6 +234,10 @@ nav {
     line-height: 1.1;
 }
 
+.highlight {
+    color: var(--gold);
+}
+
 .seo-hero .subtitle {
     font-size: 1.3rem;
     color: var(--light-gray);
