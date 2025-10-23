@@ -1067,3 +1067,217 @@ const aiErrorStyles = `
 const aiStyleElement = document.createElement('style');
 aiStyleElement.textContent = aiErrorStyles;
 document.head.appendChild(aiStyleElement);
+
+// Case Studies Page Specific JavaScript
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Case Study Animation
+    const caseStudies = document.querySelectorAll('.case-study');
+    
+    const caseStudyObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, index * 300);
+            }
+        });
+    }, { 
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    });
+    
+    caseStudies.forEach(study => {
+        caseStudyObserver.observe(study);
+    });
+    
+    // Filter Functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const caseStudyItems = document.querySelectorAll('.case-study');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            const filterValue = this.getAttribute('data-filter');
+            
+            // Filter case studies
+            caseStudyItems.forEach(item => {
+                if (filterValue === 'all') {
+                    item.style.display = 'block';
+                } else {
+                    const categories = item.getAttribute('data-category').split(' ');
+                    if (categories.includes(filterValue)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }
+            });
+            
+            // Re-trigger animations for visible items
+            setTimeout(() => {
+                caseStudies.forEach(study => {
+                    if (study.style.display !== 'none') {
+                        study.classList.add('visible');
+                    }
+                });
+            }, 100);
+        });
+    });
+    
+    // Stats Counter Animation
+    const statNumbers = document.querySelectorAll('.stat-number, .result-number');
+    
+    function isInViewport(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+    
+    function animateCounter(element) {
+        try {
+            const targetValue = element.getAttribute('data-target');
+            
+            if (!targetValue) {
+                console.warn('Missing data-target attribute for element:', element);
+                return;
+            }
+            
+            let target;
+            let hasSymbol = false;
+            let symbol = '';
+            
+            // Check if target contains symbols
+            if (targetValue.includes('%')) {
+                target = parseInt(targetValue.replace('%', ''));
+                hasSymbol = true;
+                symbol = '%';
+            } else if (targetValue.includes('#')) {
+                target = parseInt(targetValue.replace('#', ''));
+                hasSymbol = true;
+                symbol = '#';
+            } else {
+                target = parseInt(targetValue);
+            }
+            
+            if (isNaN(target)) {
+                console.warn('Invalid data-target value:', targetValue);
+                return;
+            }
+            
+            const duration = 2000;
+            const step = Math.max(target / (duration / 16), 1);
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                    element.textContent = hasSymbol ? target + symbol : target.toString();
+                } else {
+                    element.textContent = hasSymbol ? Math.floor(current) + symbol : Math.floor(current).toString();
+                }
+            }, 16);
+            
+            element.classList.add('animated');
+        } catch (error) {
+            console.error('Error animating counter:', error);
+        }
+    }
+    
+    function handleStatsScroll() {
+        statNumbers.forEach(element => {
+            if (isInViewport(element) && !element.classList.contains('animated')) {
+                animateCounter(element);
+            }
+        });
+    }
+    
+    // Initial check
+    handleStatsScroll();
+    
+    // Check on scroll
+    window.addEventListener('scroll', handleStatsScroll);
+    
+    // Enhanced hover effects for case studies
+    caseStudyItems.forEach(item => {
+        const caseContent = item.querySelector('.case-study-content');
+        const clientImage = item.querySelector('.client-image img');
+        
+        item.addEventListener('mouseenter', function() {
+            caseContent.style.transform = 'translateY(-10px)';
+            if (clientImage) {
+                clientImage.style.transform = 'scale(1.05)';
+            }
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            caseContent.style.transform = 'translateY(0)';
+            if (clientImage) {
+                clientImage.style.transform = 'scale(1)';
+            }
+        });
+    });
+    
+    // Tech tags interaction
+    const techTags = document.querySelectorAll('.tech-tag');
+    techTags.forEach(tag => {
+        tag.addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+    });
+    
+    // Smooth scrolling for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const headerHeight = document.querySelector('header').offsetHeight;
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+});
+
+// Add case studies specific styles
+const caseStudiesStyles = `
+    .case-study {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    
+    .stat-number,
+    .result-number {
+        opacity: 0;
+    }
+    
+    .stat-number.animated,
+    .result-number.animated {
+        opacity: 1;
+    }
+`;
+
+// Append case studies styles
+const caseStyleElement = document.createElement('style');
+caseStyleElement.textContent = caseStudiesStyles;
+document.head.appendChild(caseStyleElement);
+
