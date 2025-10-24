@@ -1,259 +1,47 @@
-// JavaScript Code
+// JavaScript Code - Robust Consolidated Version
 document.addEventListener('DOMContentLoaded', function() {
-    // Mobile menu toggle with improved functionality
-    const hamburger = document.querySelector('.hamburger');
-    const navLinks = document.querySelector('.nav-links');
-    const body = document.body;
-
-    hamburger.addEventListener('click', function() {
-        hamburger.classList.toggle('active');
-        navLinks.classList.toggle('active');
-        body.classList.toggle('menu-open');
-    });
-
-    // Close mobile menu when clicking on links
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', function() {
-            hamburger.classList.remove('active');
-            navLinks.classList.remove('active');
-            body.classList.remove('menu-open');
-        });
-    });
-
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', function(event) {
-        const isClickInsideNav = navLinks.contains(event.target);
-        const isClickOnHamburger = hamburger.contains(event.target);
-        
-        if (!isClickInsideNav && !isClickOnHamburger && navLinks.classList.contains('active')) {
-            hamburger.classList.remove('active');
-            navLinks.classList.remove('active');
-            body.classList.remove('menu-open');
+    // ========== GLOBAL CONFIGURATION ==========
+    const CONFIG = {
+        animation: {
+            duration: 500,
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        },
+        breakpoints: {
+            mobile: 768
         }
-    });
-
-    // Close mobile menu on escape key
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape' && navLinks.classList.contains('active')) {
-            hamburger.classList.remove('active');
-            navLinks.classList.remove('active');
-            body.classList.remove('menu-open');
-        }
-    });
-
-    // Handle window resize
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 768) {
-            hamburger.classList.remove('active');
-            navLinks.classList.remove('active');
-            body.classList.remove('menu-open');
-        }
-    });
-
-    // Header scroll effect
-    window.addEventListener('scroll', function() {
-        const header = document.querySelector('header');
-        if(window.scrollY > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-    });
-
-    // FAQ functionality - Enhanced for both homepage and SEO page
-    const faqItems = document.querySelectorAll('.faq-item');
-
-    faqItems.forEach(item => {
-        const question = item.querySelector('.faq-question');
-        
-        question.addEventListener('click', () => {
-            // Close all other FAQ items
-            faqItems.forEach(otherItem => {
-                if(otherItem !== item) {
-                    otherItem.classList.remove('active');
-                }
-            });
-            
-            // Toggle current item
-            item.classList.toggle('active');
-        });
-    });
-
-    // Add animations on scroll
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
     };
 
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if(entry.isIntersecting) {
-                entry.target.style.opacity = 1;
-                entry.target.style.transform = 'translateY(0)';
+    // ========== UTILITY FUNCTIONS ==========
+    const utils = {
+        // Check if element is in viewport
+        isInViewport: (element) => {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        },
+
+        // Validate email
+        validateEmail: (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
+
+        // Validate URL
+        validateURL: (url) => {
+            try {
+                new URL(url);
+                return true;
+            } catch (_) {
+                return false;
             }
-        });
-    }, observerOptions);
+        },
 
-    // Observe elements for animation - Expanded for SEO page elements
-    const elementsToAnimate = document.querySelectorAll('.expertise-card, .case-study, .testimonial, .reason, .blog-card, .service-card, .process-step, .result-card, .benefit, .srilanka-feature');
-    elementsToAnimate.forEach(el => {
-        el.style.opacity = 0;
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-        observer.observe(el);
-    });
-
-    // Add animation for hero content - Both homepage and SEO page
-    const heroContent = document.querySelector('.hero-content');
-    const seoHeroContent = document.querySelector('.seo-hero-text');
-    
-    if(heroContent) {
-        heroContent.style.opacity = 0;
-        heroContent.style.transform = 'translateY(30px)';
-        heroContent.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-        
-        setTimeout(() => {
-            heroContent.style.opacity = 1;
-            heroContent.style.transform = 'translateY(0)';
-        }, 300);
-    }
-    
-    if(seoHeroContent) {
-        seoHeroContent.style.opacity = 0;
-        seoHeroContent.style.transform = 'translateY(30px)';
-        seoHeroContent.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-        
-        setTimeout(() => {
-            seoHeroContent.style.opacity = 1;
-            seoHeroContent.style.transform = 'translateY(0)';
-        }, 300);
-    }
-
-    // Add hover effect for buttons
-    const buttons = document.querySelectorAll('.btn');
-    buttons.forEach(button => {
-        button.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-3px)';
-        });
-        
-        button.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-    
-    // Add loading animation for page
-    window.addEventListener('load', function() {
-        document.body.classList.add('loaded');
-    });
-
-    // SEO Audit Form Handling
-    const seoAuditForm = document.getElementById('seo-audit-form');
-    if(seoAuditForm) {
-        seoAuditForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(this);
-            const name = formData.get('name');
-            const email = formData.get('email');
-            const website = formData.get('website');
-            const goals = formData.get('goals');
-            
-            // Simple validation
-            if(!name || !email || !website) {
-                showNotification('Please fill in all required fields.', 'error');
-                return;
-            }
-            
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if(!emailRegex.test(email)) {
-                showNotification('Please enter a valid email address.', 'error');
-                return;
-            }
-            
-            // Show loading state
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Processing...';
-            submitBtn.disabled = true;
-            
-            // Simulate form submission (replace with actual API call)
-            setTimeout(() => {
-                showNotification('Thank you! Your SEO audit request has been received. We\'ll contact you within 24 hours.', 'success');
-                seoAuditForm.reset();
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-                
-                // Track conversion (if you have analytics)
-                if(typeof gtag !== 'undefined') {
-                    gtag('event', 'conversion', {
-                        'send_to': 'AW-YOUR_CONVERSION_ID/seo_audit_request',
-                        'value': 1.0,
-                        'currency': 'USD'
-                    });
-                }
-            }, 2000);
-        });
-    }
-
-    // Process Step Animation
-    const processSteps = document.querySelectorAll('.process-step');
-    const processObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, { threshold: 0.2 });
-
-    processSteps.forEach(step => {
-        step.style.opacity = '0';
-        step.style.transform = 'translateY(30px)';
-        step.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        processObserver.observe(step);
-    });
-
-    // Service Cards Hover Effects
-    const serviceCards = document.querySelectorAll('.service-card');
-    serviceCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-10px) scale(1.02)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
-    });
-
-    // Case Study Expand/Collapse (for mobile)
-    const caseStudies = document.querySelectorAll('.seo-case-study');
-    caseStudies.forEach(study => {
-        const content = study.querySelector('.case-study-content');
-        const challengeSolution = study.querySelector('.challenge-solution');
-        
-        if (window.innerWidth <= 768) {
-            // Add toggle functionality for mobile
-            const header = study.querySelector('.case-study-content h3');
-            header.style.cursor = 'pointer';
-            
-            header.addEventListener('click', () => {
-                study.classList.toggle('expanded');
-            });
-        }
-    });
-
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            if(targetId === '#') return;
-            
+        // Smooth scroll to element
+        smoothScroll: (targetId) => {
             const targetElement = document.querySelector(targetId);
-            if(targetElement) {
+            if (targetElement) {
                 const headerHeight = document.querySelector('header').offsetHeight;
                 const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
                 
@@ -262,31 +50,631 @@ document.addEventListener('DOMContentLoaded', function() {
                     behavior: 'smooth'
                 });
             }
-        });
-    });
+        },
 
-    // Active navigation highlighting for SEO page
-    function highlightActiveNav() {
-        const currentPage = window.location.pathname;
-        const navLinks = document.querySelectorAll('.nav-links a');
-        
-        navLinks.forEach(link => {
-            if(link.getAttribute('href') === currentPage) {
-                link.classList.add('active');
+        // Debounce function for performance
+        debounce: (func, wait) => {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+    };
+
+    // ========== NOTIFICATION SYSTEM ==========
+    const notification = {
+        show: (message, type = 'success') => {
+            // Remove existing notifications
+            document.querySelectorAll('.notification').forEach(notification => notification.remove());
+            
+            // Create new notification
+            const notificationEl = document.createElement('div');
+            notificationEl.className = `notification ${type}`;
+            notificationEl.textContent = message;
+            
+            document.body.appendChild(notificationEl);
+            
+            // Animate in
+            setTimeout(() => notificationEl.classList.add('show'), 100);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notificationEl.classList.remove('show');
+                setTimeout(() => notificationEl.remove(), 300);
+            }, 5000);
+        }
+    };
+
+    // ========== COUNTER ANIMATION SYSTEM ==========
+    const counterAnimation = {
+        elements: [],
+        observer: null,
+
+        init: function() {
+            this.elements = document.querySelectorAll('.percentage, .result-number, .stat-number');
+            this.observer = new IntersectionObserver(this.handleIntersection.bind(this), {
+                threshold: 0.1
+            });
+            
+            this.elements.forEach(el => this.observer.observe(el));
+        },
+
+        handleIntersection: function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+                    this.animateCounter(entry.target);
+                }
+            });
+        },
+
+        animateCounter: function(element) {
+            try {
+                const targetValue = element.getAttribute('data-target');
+                
+                if (!targetValue) {
+                    console.warn('Missing data-target attribute for element:', element);
+                    return;
+                }
+
+                let target, symbol = '';
+                
+                // Handle symbols in target value
+                if (targetValue.includes('%')) {
+                    target = parseInt(targetValue.replace('%', ''));
+                    symbol = '%';
+                } else if (targetValue.includes('+')) {
+                    target = parseInt(targetValue.replace('+', ''));
+                    symbol = '+';
+                } else {
+                    target = parseInt(targetValue);
+                }
+
+                if (isNaN(target)) {
+                    console.warn('Invalid data-target value:', targetValue);
+                    return;
+                }
+
+                const duration = 2000;
+                const step = Math.max(target / (duration / 16), 1);
+                let current = 0;
+
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                        element.textContent = symbol ? target + symbol : target.toString();
+                    } else {
+                        element.textContent = symbol ? Math.floor(current) + symbol : Math.floor(current).toString();
+                    }
+                }, 16);
+
+                element.classList.add('animated');
+            } catch (error) {
+                console.error('Error animating counter:', error);
+            }
+        }
+    };
+
+    // ========== SCROLL ANIMATION SYSTEM ==========
+    const scrollAnimation = {
+        observer: null,
+        animatedSelectors: [
+            '.expertise-card', '.case-study', '.testimonial', '.reason', 
+            '.blog-card', '.service-card', '.process-step', '.result-card', 
+            '.benefit', '.srilanka-feature', '.advantage-card', '.approach-item',
+            '.feature', '.benefit-card', '.capability', '.offering-item',
+            '.timeline-item', '.story-item', '.implementation-step',
+            '.seo-solution-card', '.solution-feature', '.strategy-item' // Added SEO solutions elements
+        ],
+
+        init: function() {
+            this.observer = new IntersectionObserver(this.handleIntersection.bind(this), CONFIG.animation);
+            this.setupElements();
+            
+            // Special handling for SEO solutions section with staggered animation
+            this.setupSEOSolutionsAnimation();
+        },
+
+        setupElements: function() {
+            this.animatedSelectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(el => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(30px)';
+                    el.style.transition = `opacity ${CONFIG.animation.duration}ms ease, transform ${CONFIG.animation.duration}ms ease`;
+                    this.observer.observe(el);
+                });
+            });
+        },
+
+        handleIntersection: function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        },
+
+        // Special setup for SEO solutions section
+        setupSEOSolutionsAnimation: function() {
+            const seoSolutionsSection = document.querySelector('.seo-solutions');
+            if (!seoSolutionsSection) return;
+
+            const solutionCards = seoSolutionsSection.querySelectorAll('.seo-solution-card');
+            const solutionFeatures = seoSolutionsSection.querySelectorAll('.solution-feature');
+            const strategyItems = seoSolutionsSection.querySelectorAll('.strategy-item');
+
+            // Apply staggered animation to SEO solution cards
+            this.staggerAnimation(solutionCards, 150);
+            
+            // Apply staggered animation to solution features
+            this.staggerAnimation(solutionFeatures, 100);
+            
+            // Apply staggered animation to strategy items
+            this.staggerAnimation(strategyItems, 120);
+        },
+
+        // Staggered animation for groups
+        staggerAnimation: function(elements, delay = 100) {
+            elements.forEach((el, index) => {
+                el.style.transitionDelay = `${index * delay}ms`;
+            });
+        }
+    };
+
+    // ========== MOBILE MENU SYSTEM ==========
+    const mobileMenu = {
+        hamburger: null,
+        navLinks: null,
+        body: null,
+        isOpen: false,
+
+        init: function() {
+            this.hamburger = document.querySelector('.hamburger');
+            this.navLinks = document.querySelector('.nav-links');
+            this.body = document.body;
+
+            if (!this.hamburger || !this.navLinks) return;
+
+            this.setupEventListeners();
+        },
+
+        setupEventListeners: function() {
+            // Hamburger click
+            this.hamburger.addEventListener('click', this.toggle.bind(this));
+
+            // Close when clicking on links
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', this.close.bind(this));
+            });
+
+            // Close when clicking outside
+            document.addEventListener('click', (event) => {
+                const isClickInsideNav = this.navLinks.contains(event.target);
+                const isClickOnHamburger = this.hamburger.contains(event.target);
+                
+                if (!isClickInsideNav && !isClickOnHamburger && this.isOpen) {
+                    this.close();
+                }
+            });
+
+            // Close on escape key
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && this.isOpen) {
+                    this.close();
+                }
+            });
+
+            // Close on window resize
+            window.addEventListener('resize', utils.debounce(() => {
+                if (window.innerWidth > CONFIG.breakpoints.mobile && this.isOpen) {
+                    this.close();
+                }
+            }, 250));
+        },
+
+        toggle: function() {
+            if (this.isOpen) {
+                this.close();
             } else {
-                link.classList.remove('active');
+                this.open();
+            }
+        },
+
+        open: function() {
+            this.hamburger.classList.add('active');
+            this.navLinks.classList.add('active');
+            this.body.classList.add('menu-open');
+            this.isOpen = true;
+        },
+
+        close: function() {
+            this.hamburger.classList.remove('active');
+            this.navLinks.classList.remove('active');
+            this.body.classList.remove('menu-open');
+            this.isOpen = false;
+        }
+    };
+
+    // ========== FORM HANDLING SYSTEM ==========
+    const formHandler = {
+        forms: {},
+
+        init: function() {
+            this.setupForms();
+            this.setupFormValidation();
+        },
+
+        setupForms: function() {
+            // SEO Audit Form
+            this.forms.seoAudit = document.getElementById('seo-audit-form');
+            if (this.forms.seoAudit) {
+                this.forms.seoAudit.addEventListener('submit', (e) => this.handleFormSubmit(e, 'seo-audit'));
+            }
+
+            // AI Consultation Form
+            this.forms.aiConsultation = document.getElementById('ai-seo-consultation-form');
+            if (this.forms.aiConsultation) {
+                this.forms.aiConsultation.addEventListener('submit', (e) => this.handleFormSubmit(e, 'ai-consultation'));
+            }
+
+            // WordPress Consultation Form
+            this.forms.wordpressConsultation = document.getElementById('wordpress-consultation-form');
+            if (this.forms.wordpressConsultation) {
+                this.forms.wordpressConsultation.addEventListener('submit', (e) => this.handleFormSubmit(e, 'wordpress-consultation'));
+            }
+        },
+
+        setupFormValidation: function() {
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                const inputs = form.querySelectorAll('input, textarea, select');
+                inputs.forEach(input => {
+                    input.addEventListener('blur', () => this.validateField(input));
+                    input.addEventListener('input', () => this.clearFieldError(input));
+                });
+            });
+        },
+
+        validateField: function(field) {
+            if (field.value.trim() === '' && field.hasAttribute('required')) {
+                field.classList.add('error');
+                return false;
+            }
+
+            if (field.type === 'email' && field.value.trim() !== '' && !utils.validateEmail(field.value)) {
+                field.classList.add('error');
+                return false;
+            }
+
+            if (field.type === 'url' && field.value.trim() !== '' && !utils.validateURL(field.value)) {
+                field.classList.add('error');
+                return false;
+            }
+
+            field.classList.remove('error');
+            return true;
+        },
+
+        clearFieldError: function(field) {
+            if (field.value.trim() !== '') {
+                field.classList.remove('error');
+            }
+        },
+
+        handleFormSubmit: function(e, formType) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            // Validate all fields
+            let isValid = true;
+            const inputs = form.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                if (!this.validateField(input)) {
+                    isValid = false;
+                }
+            });
+
+            if (!isValid) {
+                notification.show('Please fill in all required fields correctly.', 'error');
+                return;
+            }
+
+            // Show loading state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Processing...';
+            submitBtn.disabled = true;
+
+            // Simulate form submission
+            setTimeout(() => {
+                const successMessages = {
+                    'seo-audit': 'Thank you! Your SEO audit request has been received.',
+                    'ai-consultation': 'Thank you! Your AI SEO audit request has been received.',
+                    'wordpress-consultation': 'Thank you! Your WordPress consultation request has been received.'
+                };
+
+                notification.show(successMessages[formType] + ' We\'ll contact you within 24 hours.', 'success');
+                form.reset();
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+
+                // Track conversion
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'conversion', {
+                        'send_to': `AW-YOUR_CONVERSION_ID/${formType}_request`,
+                        'value': 1.0,
+                        'currency': 'USD'
+                    });
+                }
+            }, 2000);
+        }
+    };
+
+    // ========== INTERACTIVE COMPONENTS ==========
+    const interactiveComponents = {
+        init: function() {
+            this.setupFAQ();
+            this.setupHoverEffects();
+            this.setupSmoothScrolling();
+            this.setupCaseStudyFilters();
+            this.setupActiveNavigation();
+            this.setupSEOSolutionsInteractions(); // Added SEO solutions interactions
+        },
+
+        setupFAQ: function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    // Close all other FAQ items
+                    faqItems.forEach(otherItem => {
+                        if(otherItem !== item) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                    
+                    // Toggle current item
+                    item.classList.toggle('active');
+                });
+            });
+        },
+
+        setupHoverEffects: function() {
+            // Buttons
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', () => button.style.transform = 'translateY(-3px)');
+                button.addEventListener('mouseleave', () => button.style.transform = 'translateY(0)');
+            });
+
+            // Cards - including SEO solution cards
+            const cards = document.querySelectorAll('.service-card, .advantage-card, .case-study, .benefit-card, .seo-solution-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-10px) scale(1.02)';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // Solution features
+            const solutionFeatures = document.querySelectorAll('.solution-feature');
+            solutionFeatures.forEach(feature => {
+                feature.addEventListener('mouseenter', () => {
+                    feature.style.transform = 'translateY(-5px)';
+                });
+                feature.addEventListener('mouseleave', () => {
+                    feature.style.transform = 'translateY(0)';
+                });
+            });
+        },
+
+        setupSmoothScrolling: function() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId !== '#') {
+                        utils.smoothScroll(targetId);
+                    }
+                });
+            });
+        },
+
+        setupCaseStudyFilters: function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const caseStudyItems = document.querySelectorAll('.case-study');
+
+            if (filterButtons.length === 0) return;
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Filter items
+                    const filterValue = this.getAttribute('data-filter');
+                    caseStudyItems.forEach(item => {
+                        if (filterValue === 'all') {
+                            item.style.display = 'block';
+                        } else {
+                            const categories = item.getAttribute('data-category').split(' ');
+                            item.style.display = categories.includes(filterValue) ? 'block' : 'none';
+                        }
+                    });
+                });
+            });
+        },
+
+        setupActiveNavigation: function() {
+            const currentPage = window.location.pathname;
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        },
+
+        // SEO Solutions specific interactions
+        setupSEOSolutionsInteractions: function() {
+            const solutionCards = document.querySelectorAll('.seo-solution-card');
+            
+            solutionCards.forEach(card => {
+                // Add click effect for solution cards
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                });
+
+                // Add icon animation on hover
+                const icon = card.querySelector('.solution-icon');
+                if (icon) {
+                    card.addEventListener('mouseenter', () => {
+                        icon.style.transform = 'rotate(10deg) scale(1.1)';
+                    });
+                    card.addEventListener('mouseleave', () => {
+                        icon.style.transform = 'rotate(0) scale(1)';
+                    });
+                }
+            });
+
+            // Strategy items interaction
+            const strategyItems = document.querySelectorAll('.strategy-item');
+            strategyItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    const number = this.querySelector('.strategy-number');
+                    if (number) {
+                        number.style.transform = 'scale(1.2)';
+                    }
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    const number = this.querySelector('.strategy-number');
+                    if (number) {
+                        number.style.transform = 'scale(1)';
+                    }
+                });
+            });
+        }
+    };
+
+    // ========== PAGE SPECIFIC FUNCTIONALITY ==========
+    const pageSpecific = {
+        init: function() {
+            this.setupHeroAnimations();
+            this.setupHeaderScroll();
+            this.setupPageLoad();
+            this.setupSEOSolutionsSection(); // Added SEO solutions setup
+        },
+
+        setupHeroAnimations: function() {
+            const heroContent = document.querySelector('.hero-content');
+            const seoHeroContent = document.querySelector('.seo-hero-text');
+            
+            [heroContent, seoHeroContent].forEach(element => {
+                if (element) {
+                    element.style.opacity = '0';
+                    element.style.transform = 'translateY(30px)';
+                    element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                    
+                    setTimeout(() => {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }, 300);
+                }
+            });
+        },
+
+        setupHeaderScroll: function() {
+            window.addEventListener('scroll', utils.debounce(() => {
+                const header = document.querySelector('header');
+                if (header) {
+                    header.classList.toggle('scrolled', window.scrollY > 50);
+                }
+            }, 10));
+        },
+
+        setupPageLoad: function() {
+            window.addEventListener('load', () => {
+                document.body.classList.add('loaded');
+            });
+        },
+
+        // SEO Solutions section specific setup
+        setupSEOSolutionsSection: function() {
+            const seoSolutionsSection = document.querySelector('.seo-solutions');
+            if (!seoSolutionsSection) return;
+
+            // Add intersection observer for the entire section
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('section-visible');
+                        
+                        // Trigger counter animations if any in this section
+                        const counters = entry.target.querySelectorAll('.percentage, .stat-number');
+                        counters.forEach(counter => {
+                            if (!counter.classList.contains('animated')) {
+                                counterAnimation.animateCounter(counter);
+                            }
+                        });
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            sectionObserver.observe(seoSolutionsSection);
+        }
+    };
+
+    // ========== INITIALIZE ALL SYSTEMS ==========
+    function initializeAll() {
+        mobileMenu.init();
+        scrollAnimation.init();
+        counterAnimation.init();
+        formHandler.init();
+        interactiveComponents.init();
+        pageSpecific.init();
+
+        // Apply staggered animations to specific element groups
+        const staggeredElements = [
+            '.advantage-card',
+            '.service-card', 
+            '.process-step',
+            '.benefit-card',
+            '.offering-item',
+            '.seo-solution-card', // Added SEO solution cards
+            '.solution-feature',  // Added solution features
+            '.strategy-item'      // Added strategy items
+        ];
+
+        staggeredElements.forEach(selector => {
+            const elements = document.querySelectorAll(selector);
+            if (elements.length > 0) {
+                scrollAnimation.staggerAnimation(elements, 100);
             }
         });
     }
-    
-    highlightActiveNav();
+
+    // Start everything
+    initializeAll();
 });
 
-
-
-// Add some custom styles for loading state
-/* const style = document.createElement('style');
-style.textContent = `
+// Add global styles including SEO solutions specific styles
+const globalStyles = `
     body {
         opacity: 0;
         transition: opacity 0.5s ease;
@@ -295,7 +683,6 @@ style.textContent = `
     body.loaded {
         opacity: 1;
     }
-    
     
     .notification {
         position: fixed;
@@ -323,31 +710,12 @@ style.textContent = `
         background-color: #ef4444;
     }
     
-    .seo-case-study {
-        transition: all 0.3s ease;
+    form input.error,
+    form select.error,
+    form textarea.error {
+        border-color: #ef4444 !important;
+        box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
     }
-    
-    @media (max-width: 768px) {
-        .challenge-solution {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        
-        .seo-case-study.expanded .challenge-solution {
-            max-height: 1000px;
-        }
-        
-        .case-study-results {
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .seo-case-study.expanded .case-study-results {
-            opacity: 1;
-        }
-    }
-    
     
     .btn-primary {
         position: relative;
@@ -368,916 +736,48 @@ style.textContent = `
     .btn-primary:hover::before {
         left: 100%;
     }
-`;
-document.head.appendChild(style);
-*/
-// Percentage counter animation - Robust version
-document.addEventListener('DOMContentLoaded', function() {
-    const percentageElements = document.querySelectorAll('.percentage');
-    const resultNumbers = document.querySelectorAll('.result-number');
     
-    // Combine all counter elements
-    const allCounterElements = [...percentageElements, ...resultNumbers];
-    
-    // Function to check if element is in viewport
-    function isInViewport(element) {
-        const rect = element.getBoundingClientRect();
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
+    /* SEO Solutions specific animations */
+    .seo-solution-card {
+        transition: all 0.3s ease;
     }
     
-    // Function to animate counting up - ULTRA ROBUST VERSION
-    function animateCounter(element) {
-        try {
-            // Get the target value safely
-            const targetValue = element.getAttribute('data-target');
-            
-            // Validate the target value
-            if (!targetValue) {
-                console.warn('Missing data-target attribute for element:', element);
-                return;
-            }
-            
-            const target = parseInt(targetValue);
-            if (isNaN(target)) {
-                console.warn('Invalid data-target value (not a number):', targetValue);
-                return;
-            }
-            
-            const duration = 2000; // Animation duration in milliseconds
-            const step = Math.max(target / (duration / 16), 1); // Ensure step is at least 1
-            let current = 0;
-            
-            const timer = setInterval(() => {
-                current += step;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                    element.textContent = target.toString(); // Ensure it's a string
-                } else {
-                    element.textContent = Math.floor(current).toString();
-                }
-            }, 16);
-            
-            element.classList.add('animated');
-        } catch (error) {
-            console.error('Error animating counter:', error);
+    .solution-icon {
+        transition: transform 0.3s ease;
+    }
+    
+    .strategy-number {
+        transition: transform 0.3s ease;
+    }
+    
+    .solution-feature {
+        transition: all 0.3s ease;
+    }
+    
+    /* Mobile case study expand/collapse */
+    @media (max-width: 768px) {
+        .challenge-solution {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
         }
-    }
-    
-    // Function to handle scroll event
-    function handleScroll() {
-        allCounterElements.forEach(element => {
-            if (isInViewport(element) && !element.classList.contains('animated')) {
-                animateCounter(element);
-            }
-        });
-    }
-    
-    // Initial check on page load
-    handleScroll();
-    
-    // Check on scroll
-    window.addEventListener('scroll', handleScroll);
-});
-
-// Scroll animation for story points
-document.addEventListener('DOMContentLoaded', function() {
-    const storyPoints = document.querySelectorAll('.story-point');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, { threshold: 0.3 });
-    
-    storyPoints.forEach(point => {
-        observer.observe(point);
-    });
-});
-
-// Notification system for form submissions
-function showNotification(message, type = 'success') {
-    // Remove existing notifications
-    const existingNotifications = document.querySelectorAll('.notification');
-    existingNotifications.forEach(notification => notification.remove());
-    
-    // Create new notification
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    // Animate in
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 100);
-    
-    // Remove after 5 seconds
-    setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
-    }, 5000);
-}
-
-// Enhanced SEO page animations
-document.addEventListener('DOMContentLoaded', function() {
-    // Animate service cards with staggered delay
-    const serviceCards = document.querySelectorAll('.service-card');
-    serviceCards.forEach((card, index) => {
-        card.style.transitionDelay = `${index * 0.1}s`;
-    });
-    
-    // Animate process steps with staggered delay
-    const processSteps = document.querySelectorAll('.process-step');
-    processSteps.forEach((step, index) => {
-        step.style.transitionDelay = `${index * 0.15}s`;
-    });
-    
-    
-});
-
-// Enhanced form validation for SEO audit
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
-
-function validateURL(url) {
-    try {
-        new URL(url);
-        return true;
-    } catch (_) {
-        return false;
-    }
-}
-
-// Add input validation styling
-document.addEventListener('DOMContentLoaded', function() {
-    const formInputs = document.querySelectorAll('#seo-audit-form input, #seo-audit-form textarea');
-    
-    formInputs.forEach(input => {
-        input.addEventListener('blur', function() {
-            if(this.value.trim() === '') {
-                this.classList.add('error');
-            } else {
-                this.classList.remove('error');
-                
-                // Specific validation for email and URL
-                if(this.type === 'email' && !validateEmail(this.value)) {
-                    this.classList.add('error');
-                } else if(this.type === 'url' && !validateURL(this.value)) {
-                    this.classList.add('error');
-                }
-            }
-        });
         
-        input.addEventListener('input', function() {
-            if(this.value.trim() !== '') {
-                this.classList.remove('error');
-            }
-        });
-    });
-});
-
-// Add to existing style element
-const additionalStyles = `
-    #seo-audit-form input.error,
-    #seo-audit-form textarea.error {
-        border-color: #ef4444 !important;
-        box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
-    }
-    
-    .service-card,
-    .process-step {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    
-    .seo-hero {
-        transition: transform 0.1s ease-out;
+        .seo-case-study.expanded .challenge-solution {
+            max-height: 1000px;
+        }
+        
+        .case-study-results {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .seo-case-study.expanded .case-study-results {
+            opacity: 1;
+        }
     }
 `;
 
-// Append additional styles to the existing style element
-const existingStyle = document.querySelector('style');
-if(existingStyle) {
-    existingStyle.textContent += additionalStyles;
-}
-
-// Animate stats counter
-    const statNumbers = document.querySelectorAll('.stat-number');
-    const resultNumbers = document.querySelectorAll('.result-number');
-    
-    const allCounterElements = [...statNumbers, ...resultNumbers];
-    
-    function isInViewport(element) {
-        const rect = element.getBoundingClientRect();
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
-    }
-    
-    function animateCounter(element) {
-        try {
-            const targetValue = element.getAttribute('data-target');
-            
-            if (!targetValue) {
-                console.warn('Missing data-target attribute for element:', element);
-                return;
-            }
-            
-            const target = parseInt(targetValue);
-            if (isNaN(target)) {
-                console.warn('Invalid data-target value:', targetValue);
-                return;
-            }
-            
-            const duration = 2000;
-            const step = Math.max(target / (duration / 16), 1);
-            let current = 0;
-            
-            const timer = setInterval(() => {
-                current += step;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                    element.textContent = target.toString();
-                } else {
-                    element.textContent = Math.floor(current).toString();
-                }
-            }, 16);
-            
-            element.classList.add('animated');
-        } catch (error) {
-            console.error('Error animating counter:', error);
-        }
-    }
-    
-    function handleScroll() {
-        allCounterElements.forEach(element => {
-            if (isInViewport(element) && !element.classList.contains('animated')) {
-                animateCounter(element);
-            }
-        });
-    }
-    
-    // Initial check
-    handleScroll();
-    
-    // Check on scroll
-    window.addEventListener('scroll', handleScroll);
-
-    // Enhanced animations for WordPress page
-    const elementsToAnimate = document.querySelectorAll('.advantage-card, .approach-item, .service-card, .case-study, .feature');
-    
-    const wordpressObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, { threshold: 0.1 });
-    
-    elementsToAnimate.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        wordpressObserver.observe(el);
-    });
-
-    // Staggered animation delays
-    const advantageCards = document.querySelectorAll('.advantage-card');
-    advantageCards.forEach((card, index) => {
-        card.style.transitionDelay = `${index * 0.1}s`;
-    });
-    
-    const serviceCards = document.querySelectorAll('.services-grid .service-card');
-    serviceCards.forEach((card, index) => {
-        card.style.transitionDelay = `${index * 0.1}s`;
-    });
-
-    // Enhanced hover effects
-    const interactiveCards = document.querySelectorAll('.advantage-card, .service-card, .case-study');
-    interactiveCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-10px) scale(1.02)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
-    });
-
-    // Platform comparison animation
-    const platformComparison = document.querySelector('.platform-comparison');
-    if(platformComparison) {
-        const platformObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    platformComparison.style.transform = 'translateY(0)';
-                    platformComparison.style.opacity = '1';
-                }
-            });
-        }, { threshold: 0.3 });
-        
-        platformComparison.style.opacity = '0';
-        platformComparison.style.transform = 'translateY(30px)';
-        platformComparison.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-        platformObserver.observe(platformComparison);
-    }
-
-    // Form input validation
-    const formInputs = document.querySelectorAll('#wordpress-consultation-form input, #wordpress-consultation-form select, #wordpress-consultation-form textarea');
-    
-    formInputs.forEach(input => {
-        input.addEventListener('blur', function() {
-            if(this.value.trim() === '' && this.hasAttribute('required')) {
-                this.classList.add('error');
-            } else {
-                this.classList.remove('error');
-                
-                if(this.type === 'email' && this.value.trim() !== '') {
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if(!emailRegex.test(this.value)) {
-                        this.classList.add('error');
-                    }
-                }
-            }
-        });
-        
-        input.addEventListener('input', function() {
-            if(this.value.trim() !== '') {
-                this.classList.remove('error');
-            }
-        });
-    });
-
-    // Memory Lane Animations
-document.addEventListener('DOMContentLoaded', function() {
-    const timelineItems = document.querySelectorAll('.timeline-item');
-    
-    const timelineObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                setTimeout(() => {
-                    entry.target.classList.add('animated');
-                }, index * 300);
-            }
-        });
-    }, { threshold: 0.1 });
-    
-    timelineItems.forEach(item => {
-        timelineObserver.observe(item);
-    });
-    
-    // Add hover effects for benefit cards
-    const benefitCards = document.querySelectorAll('.benefit-card');
-    benefitCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-    
-    // Add click effects for skill tags
-    const skillTags = document.querySelectorAll('.skill-tag');
-    skillTags.forEach(tag => {
-        tag.addEventListener('click', function() {
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 150);
-        });
-    });
-});
-
-// AI SEO Page Specific JavaScript - Add to existing script.js
-
-// AI Consultation Form Handling
-const aiConsultationForm = document.getElementById('ai-seo-consultation-form');
-if(aiConsultationForm) {
-    aiConsultationForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Get form data
-        const formData = new FormData(this);
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const website = formData.get('website');
-        const businessType = formData.get('business-type');
-        const goals = formData.get('goals');
-        
-        // Simple validation
-        if(!name || !email || !website || !businessType || !goals) {
-            showNotification('Please fill in all required fields.', 'error');
-            return;
-        }
-        
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if(!emailRegex.test(email)) {
-            showNotification('Please enter a valid email address.', 'error');
-            return;
-        }
-        
-        // Show loading state
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Processing...';
-        submitBtn.disabled = true;
-        
-        // Simulate form submission
-        setTimeout(() => {
-            showNotification('Thank you! Your AI SEO audit request has been received. We\'ll contact you within 24 hours.', 'success');
-            aiConsultationForm.reset();
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-            
-            // Track conversion
-            if(typeof gtag !== 'undefined') {
-                gtag('event', 'conversion', {
-                    'send_to': 'AW-YOUR_CONVERSION_ID/ai_seo_audit_request',
-                    'value': 1.0,
-                    'currency': 'USD'
-                });
-            }
-        }, 2000);
-    });
-}
-
-// AI Stats Counter Animation
-const aiStatNumbers = document.querySelectorAll('.ai-seo-stats .result-number');
-
-function animateAIStats() {
-    aiStatNumbers.forEach(element => {
-        if (isInViewport(element) && !element.classList.contains('animated')) {
-            animateCounter(element);
-        }
-    });
-}
-
-// Initial check for AI stats
-animateAIStats();
-
-// Check AI stats on scroll
-window.addEventListener('scroll', animateAIStats);
-
-
-
-// AI Implementation Stories Animation
-document.addEventListener('DOMContentLoaded', function() {
-    const storyItems = document.querySelectorAll('.story-item');
-    
-    const storyObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                setTimeout(() => {
-                    entry.target.classList.add('visible');
-                }, index * 300);
-            }
-        });
-    }, { 
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    });
-    
-    storyItems.forEach(item => {
-        storyObserver.observe(item);
-    });
-    
-    // Stats counter animation for story items
-    const statNumbers = document.querySelectorAll('.stat-number');
-    
-    function animateStoryStats() {
-        statNumbers.forEach(element => {
-            if (isInViewport(element) && !element.classList.contains('animated')) {
-                animateCounter(element);
-            }
-        });
-    }
-    
-    // Initial check
-    animateStoryStats();
-    
-    // Check on scroll
-    window.addEventListener('scroll', animateStoryStats);
-    
-    // Enhanced hover effects
-    storyItems.forEach(item => {
-        const visualContainer = item.querySelector('.visual-container');
-        const storyContent = item.querySelector('.story-content');
-        
-        item.addEventListener('mouseenter', function() {
-            visualContainer.style.transform = 'scale(1.05)';
-            storyContent.style.transform = 'translateY(-10px)';
-        });
-        
-        item.addEventListener('mouseleave', function() {
-            visualContainer.style.transform = 'scale(1)';
-            storyContent.style.transform = 'translateY(0)';
-        });
-    });
-    
-    // Helper function to check if element is in viewport
-    function isInViewport(element) {
-        const rect = element.getBoundingClientRect();
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
-    }
-    
-    // Helper function to animate counters
-    function animateCounter(element) {
-        try {
-            const targetValue = element.getAttribute('data-target');
-            
-            if (!targetValue) {
-                console.warn('Missing data-target attribute for element:', element);
-                return;
-            }
-            
-            const target = parseInt(targetValue);
-            if (isNaN(target)) {
-                console.warn('Invalid data-target value:', targetValue);
-                return;
-            }
-            
-            const duration = 1500;
-            const step = Math.max(target / (duration / 16), 1);
-            let current = 0;
-            
-            const timer = setInterval(() => {
-                current += step;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                    element.textContent = target.toString();
-                } else {
-                    element.textContent = Math.floor(current).toString();
-                }
-            }, 16);
-            
-            element.classList.add('animated');
-        } catch (error) {
-            console.error('Error animating counter:', error);
-        }
-    }
-});
-
-// Add smooth scrolling for section links
-document.querySelectorAll('a[href^="#how-ai-works"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const headerHeight = document.querySelector('header').offsetHeight;
-            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-            
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
-
-// AI Benefits Cards Animation
-const benefitCards = document.querySelectorAll('.benefit-card, .capability');
-const benefitsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, { threshold: 0.1 });
-
-benefitCards.forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(30px)';
-    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    benefitsObserver.observe(card);
-});
-
-// Staggered animation for benefit cards
-benefitCards.forEach((card, index) => {
-    card.style.transitionDelay = `${index * 0.1}s`;
-});
-
-// Offering Items Animation
-const offeringItems = document.querySelectorAll('.offering-item');
-const offeringObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-            setTimeout(() => {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateX(0)';
-            }, index * 200);
-        }
-    });
-}, { threshold: 0.1 });
-
-offeringItems.forEach(item => {
-    item.style.opacity = '0';
-    item.style.transform = 'translateX(-20px)';
-    item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    offeringObserver.observe(item);
-});
-
-// Form input validation for AI consultation form
-const aiFormInputs = document.querySelectorAll('#ai-seo-consultation-form input, #ai-seo-consultation-form select, #ai-seo-consultation-form textarea');
-
-aiFormInputs.forEach(input => {
-    input.addEventListener('blur', function() {
-        if(this.value.trim() === '' && this.hasAttribute('required')) {
-            this.classList.add('error');
-        } else {
-            this.classList.remove('error');
-            
-            if(this.type === 'email' && this.value.trim() !== '') {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if(!emailRegex.test(this.value)) {
-                    this.classList.add('error');
-                }
-            }
-            
-            if(this.type === 'url' && this.value.trim() !== '') {
-                try {
-                    new URL(this.value);
-                } catch (_) {
-                    this.classList.add('error');
-                }
-            }
-        }
-    });
-    
-    input.addEventListener('input', function() {
-        if(this.value.trim() !== '') {
-            this.classList.remove('error');
-        }
-    });
-});
-
-// Add AI-specific error styles
-const aiErrorStyles = `
-    #ai-seo-consultation-form input.error,
-    #ai-seo-consultation-form select.error,
-    #ai-seo-consultation-form textarea.error {
-        border-color: #ef4444 !important;
-        box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
-    }
-    
-    .implementation-step,
-    .benefit-card,
-    .capability,
-    .offering-item {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    
-    .process-step {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-`;
-
-// Append AI error styles
-const aiStyleElement = document.createElement('style');
-aiStyleElement.textContent = aiErrorStyles;
-document.head.appendChild(aiStyleElement);
-
-// Case Studies Page Specific JavaScript
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Case Study Animation
-    const caseStudies = document.querySelectorAll('.case-study');
-    
-    const caseStudyObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                setTimeout(() => {
-                    entry.target.classList.add('visible');
-                }, index * 300);
-            }
-        });
-    }, { 
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    });
-    
-    caseStudies.forEach(study => {
-        caseStudyObserver.observe(study);
-    });
-    
-    // Filter Functionality
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const caseStudyItems = document.querySelectorAll('.case-study');
-    
-    filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Remove active class from all buttons
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            
-            // Add active class to clicked button
-            this.classList.add('active');
-            
-            const filterValue = this.getAttribute('data-filter');
-            
-            // Filter case studies
-            caseStudyItems.forEach(item => {
-                if (filterValue === 'all') {
-                    item.style.display = 'block';
-                } else {
-                    const categories = item.getAttribute('data-category').split(' ');
-                    if (categories.includes(filterValue)) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                }
-            });
-            
-            // Re-trigger animations for visible items
-            setTimeout(() => {
-                caseStudies.forEach(study => {
-                    if (study.style.display !== 'none') {
-                        study.classList.add('visible');
-                    }
-                });
-            }, 100);
-        });
-    });
-    
-    // Stats Counter Animation
-    const statNumbers = document.querySelectorAll('.stat-number, .result-number');
-    
-    function isInViewport(element) {
-        const rect = element.getBoundingClientRect();
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
-    }
-    
-    function animateCounter(element) {
-        try {
-            const targetValue = element.getAttribute('data-target');
-            
-            if (!targetValue) {
-                console.warn('Missing data-target attribute for element:', element);
-                return;
-            }
-            
-            let target;
-            let hasSymbol = false;
-            let symbol = '';
-            
-            // Check if target contains symbols
-            if (targetValue.includes('%')) {
-                target = parseInt(targetValue.replace('%', ''));
-                hasSymbol = true;
-                symbol = '%';
-            } else if (targetValue.includes('#')) {
-                target = parseInt(targetValue.replace('#', ''));
-                hasSymbol = true;
-                symbol = '#';
-            } else {
-                target = parseInt(targetValue);
-            }
-            
-            if (isNaN(target)) {
-                console.warn('Invalid data-target value:', targetValue);
-                return;
-            }
-            
-            const duration = 2000;
-            const step = Math.max(target / (duration / 16), 1);
-            let current = 0;
-            
-            const timer = setInterval(() => {
-                current += step;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                    element.textContent = hasSymbol ? target + symbol : target.toString();
-                } else {
-                    element.textContent = hasSymbol ? Math.floor(current) + symbol : Math.floor(current).toString();
-                }
-            }, 16);
-            
-            element.classList.add('animated');
-        } catch (error) {
-            console.error('Error animating counter:', error);
-        }
-    }
-    
-    function handleStatsScroll() {
-        statNumbers.forEach(element => {
-            if (isInViewport(element) && !element.classList.contains('animated')) {
-                animateCounter(element);
-            }
-        });
-    }
-    
-    // Initial check
-    handleStatsScroll();
-    
-    // Check on scroll
-    window.addEventListener('scroll', handleStatsScroll);
-    
-    // Enhanced hover effects for case studies
-    caseStudyItems.forEach(item => {
-        const caseContent = item.querySelector('.case-study-content');
-        const clientImage = item.querySelector('.client-image img');
-        
-        item.addEventListener('mouseenter', function() {
-            caseContent.style.transform = 'translateY(-10px)';
-            if (clientImage) {
-                clientImage.style.transform = 'scale(1.05)';
-            }
-        });
-        
-        item.addEventListener('mouseleave', function() {
-            caseContent.style.transform = 'translateY(0)';
-            if (clientImage) {
-                clientImage.style.transform = 'scale(1)';
-            }
-        });
-    });
-    
-    // Tech tags interaction
-    const techTags = document.querySelectorAll('.tech-tag');
-    techTags.forEach(tag => {
-        tag.addEventListener('click', function() {
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 150);
-        });
-    });
-    
-    // Smooth scrolling for navigation
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const headerHeight = document.querySelector('header').offsetHeight;
-                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-});
-
-// Add case studies specific styles
-const caseStudiesStyles = `
-    .case-study {
-        opacity: 0;
-        transform: translateY(50px);
-    }
-    
-    .stat-number,
-    .result-number {
-        opacity: 0;
-    }
-    
-    .stat-number.animated,
-    .result-number.animated {
-        opacity: 1;
-    }
-`;
-
-// Append case studies styles
-const caseStyleElement = document.createElement('style');
-caseStyleElement.textContent = caseStudiesStyles;
-document.head.appendChild(caseStyleElement);
-
+// Inject styles
+const styleElement = document.createElement('style');
+styleElement.textContent = globalStyles;
+document.head.appendChild(styleElement);

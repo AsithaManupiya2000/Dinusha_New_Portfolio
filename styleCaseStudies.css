@@ -215,8 +215,6 @@ nav {
     transition: all 0.3s ease;
 }
 
-/* Case Studies Page Styles */
-
 /* Case Studies Hero Section */
 .case-studies-hero {
     padding: 150px 0 80px 0;
@@ -574,6 +572,7 @@ nav {
     line-height: 1.6;
     margin-bottom: 25px;
     font-style: italic;
+    color: var(--white);
 }
 
 .client-info h4 {
@@ -587,6 +586,7 @@ nav {
     font-size: 0.95rem;
     opacity: 0.9;
     font-style: normal;
+    color: var(--white);
 }
 
 /* Case Studies CTA Section */
@@ -615,8 +615,6 @@ nav {
     flex-wrap: wrap;
     gap: 20px;
 }
-
-
 
 /* Footer */
 footer {
@@ -712,6 +710,19 @@ footer {
     font-size: 0.9rem;
 }
 
+
+/* Make testimonials always visible on tablet and mobile */
+@media (max-width: 1024px) {
+    .testimonial-overlay {
+        opacity: 1 !important;
+        background: linear-gradient(to bottom, transparent 0%, rgba(30, 42, 68, 0.85) 100%);
+    }
+    
+    .case-study-content:hover .testimonial-overlay {
+        opacity: 1 !important;
+    }
+}
+
 /* Medium devices (tablets, 1024px and down) */
 @media (max-width: 1024px) {
     .btn-nav {
@@ -759,6 +770,12 @@ footer {
     .filter-container {
         flex-direction: column;
         gap: 20px;
+    }
+    
+    /* Ensure testimonials are visible on tablet */
+    .testimonial-overlay {
+        opacity: 1 !important;
+        padding: 30px;
     }
 }
 
@@ -850,12 +867,20 @@ footer {
         justify-content: center;
     }
     
+    /* Ensure testimonials are visible on mobile */
     .testimonial-overlay {
-        padding: 30px;
+        opacity: 1 !important;
+        padding: 25px;
+        background: linear-gradient(to bottom, transparent 0%, rgba(30, 42, 68, 0.9) 100%);
     }
     
     .testimonial-content p {
         font-size: 1rem;
+    }
+    
+    .testimonial-content i {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
     }
 }
 
@@ -899,4 +924,23 @@ footer {
         width: 100%;
         max-width: 300px;
     }
+    
+    /* Ensure testimonials are visible on small mobile */
+    .testimonial-overlay {
+        padding: 20px;
+    }
+    
+    .testimonial-content p {
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+    }
+    
+    .client-info h4 {
+        font-size: 1.1rem;
+    }
+    
+    .client-info p {
+        font-size: 0.9rem;
+    }
 }
+

@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | SEO Specialist Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #28344a;
+            --dark-green: #3a4f5f;
+            --light-blue: #8fa4c4;
+            --gold: #bfa25a;
+            --white: #ffffff;
+            --gray: #7d8590;
+            --light-gray: #e9ecef;
+            --black: #1c1f26;
+            --cream: #f2ebe3;
+            --charcoal: #3a3f4b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: var(--dark-blue);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            background-color: rgba(26, 54, 93, 0.95);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header.scrolled {
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--white);
+        }
+
+        .logo span {
+            color: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: var(--gold);
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            width: 30px;
+            height: 20px;
+            justify-content: space-between;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: var(--gold);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* Blog Hero Section */
+        .page-hero {
+            padding-top: 150px;
+            padding-bottom: 80px;
+            background-color: var(--charcoal);
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .page-hero p {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            color: var(--light-gray);
+        }
+
+        /* Blog Section */
+        .blog-page {
+            padding: 80px 0;
+        }
+
+        .blog-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background-color: var(--charcoal);
+            color: var(--light-gray);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: "Inter", sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: var(--gold);
+            color: var(--dark-blue);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .blog-card {
+            background-color: var(--charcoal);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .blog-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .blog-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .blog-card:hover .blog-image img {
+            transform: scale(1.05);
+        }
+
+        .blog-category {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--gold);
+            color: var(--dark-blue);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .blog-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: var(--light-blue);
+        }
+
+        .blog-content h3 {
+            color: var(--gold);
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .blog-excerpt {
+            margin-bottom: 20px;
+            color: var(--light-gray);
+            flex-grow: 1;
+        }
+
+        .read-more {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .read-more::after {
+            content: '→';
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .read-more:hover::after {
+            transform: translateX(5px);
+        }
+
+        /* Pagination Scroller */
+        .pagination-scroller {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+            gap: 10px;
+        }
+
+        .page-number {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: var(--charcoal);
+            color: var(--light-gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .page-number.active {
+            background-color: var(--gold);
+            color: var(--dark-blue);
+        }
+
+        .page-number:hover:not(.active) {
+            background-color: var(--light-blue);
+            color: var(--dark-blue);
+        }
+
+        .page-dots {
+            color: var(--light-gray);
+            margin: 0 5px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--black);
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            color: var(--gold);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section a {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--gold);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--charcoal);
+            color: var(--gray);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: var(--dark-blue);
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: var(--light-gray);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--gold);
+        }
+
+        .blog-article {
+            color: var(--light-gray);
+        }
+
+        .blog-article h1 {
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .blog-meta-full {
+            display: flex;
+            margin-bottom: 30px;
+            color: var(--light-blue);
+            font-size: 0.9rem;
+        }
+
+        .blog-meta-full span {
+            margin-right: 20px;
+        }
+
+        .blog-article img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .blog-article-content {
+            line-height: 1.8;
+        }
+
+        .blog-article-content h2, 
+        .blog-article-content h3 {
+            color: var(--gold);
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .blog-article-content p {
+            margin-bottom: 20px;
+        }
+
+        .blog-article-content ul, 
+        .blog-article-content ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .blog-article-content li {
+            margin-bottom: 10px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--dark-blue);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 10px 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .blog-filters {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+
+            .pagination-scroller {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <div class="logo">SEO<span>Pro</span></div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#services">Services</a></li>
+                    <li><a href="index.html#portfolio">Portfolio</a></li>
+                    <li><a href="blog.html" class="active">Blog</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Blog Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <h1>SEO & Digital Marketing Insights</h1>
+            <p>Explore the latest trends, strategies, and best practices in SEO, WordPress development, and AI-powered optimization.</p>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="blog-page">
+        <div class="container">
+            <div class="blog-filters">
+                <button class="filter-btn active" data-filter="all">All Posts</button>
+                <button class="filter-btn" data-filter="AI SEO">AI SEO</button>
+                <button class="filter-btn" data-filter="WordPress">WordPress</button>
+                <button class="filter-btn" data-filter="Local SEO">Local SEO</button>
+                <button class="filter-btn" data-filter="Technical SEO">Technical SEO</button>
+                <button class="filter-btn" data-filter="Content Strategy">Content Strategy</button>
+                <button class="filter-btn" data-filter="E-commerce SEO">E-commerce SEO</button>
+            </div>
+            <div class="blog-grid" id="blogGrid">
+                <!-- Blog posts will be loaded here by JavaScript -->
+            </div>
+            <div class="pagination-scroller" id="paginationScroller">
+                <!-- Pagination numbers will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">SEO<span>Pro</span></div>
+                    <p>Helping Sri Lankan businesses grow through expert SEO strategies and digital marketing solutions.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#services">Services</a></li>
+                        <li><a href="index.html#portfolio">Portfolio</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="#">SEO Optimization</a></li>
+                        <li><a href="#">WordPress Development</a></li>
+                        <li><a href="#">AI SEO</a></li>
+                        <li><a href="#">Local SEO</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                        <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+                        <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 SEO Specialist Portfolio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Blog Modal -->
+    <div id="blogModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="modalBody">
+                <!-- Blog content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Blog data with images
+        const blogPosts = [
+            {
+                id: 1,
+                title: "The Future of SEO: How AI is Changing the Game",
+                excerpt: "Discover how artificial intelligence is revolutionizing SEO strategies and what it means for your business.",
+                date: "October 15, 2023",
+                category: "AI SEO",
+                readTime: "5 min read",
+                image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                content: `
+                    <h1>The Future of SEO: How AI is Changing the Game</h1>
+                    <div class="blog-meta-full">
+                        <span>October 15, 2023</span>
+                        <span>AI SEO</span>
+                        <span>5 min read</span>
+                    </div>
+                    <div class="blog-article-content">
+                        <p>Artificial Intelligence is no longer a futuristic concept—it's actively reshaping the SEO landscape. As an SEO specialist in Sri Lanka, I've witnessed firsthand how AI tools are transforming traditional optimization strategies.</p>
+                        
+                        <h2>How AI is Impacting SEO</h2>
+                        <p>AI-powered tools can now analyze search patterns, user behavior, and content performance at a scale that was previously impossible. This allows for more precise targeting and optimization.</p>
+                        
+                        <h3>Key Areas Where AI is Making a Difference:</h3>
+                        <ul>
+                            <li><strong>Content Creation and Optimization:</strong> AI tools can generate topic ideas, optimize existing content, and even create drafts.</li>
+                            <li><strong>Keyword Research:</strong> Advanced algorithms can identify semantic relationships and long-tail opportunities.</li>
+                            <li><strong>Technical SEO:</strong> AI can crawl websites more efficiently, identifying issues that might be missed by traditional tools.</li>
+                            <li><strong>User Experience Analysis:</strong> Machine learning can interpret user behavior signals to improve site structure and content.</li>
+                        </ul>
+                        
+                        <h2>Implementing AI in Your SEO Strategy</h2>
+                        <p>For Sri Lankan businesses looking to stay competitive, integrating AI into your SEO approach is becoming essential. Start by:</p>
+                        <ol>
+                            <li>Exploring AI-powered SEO tools that fit your budget and needs</li>
+                            <li>Training your team on how to interpret AI-generated insights</li>
+                            <li>Testing AI content generation while maintaining quality standards</li>
+                            <li>Monitoring performance metrics to measure AI's impact</li>
+                        </ol>
+                        
+                        <p>The future of SEO is intelligent, adaptive, and data-driven. By embracing AI technologies now, you can position your business for long-term success in the evolving digital landscape.</p>
+                    </div>
+                `
+            },
+            {
+                id: 2,
+                title: "WordPress SEO: Essential Tips for Better Rankings",
+                excerpt: "Learn the must-know WordPress SEO techniques to improve your website's search engine visibility.",
+                date: "October 10, 2023",
+                category: "WordPress",
+                readTime: "4 min read",
+                image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                content: `
+                    <h1>WordPress SEO: Essential Tips for Better Rankings</h1>
+                    <div class="blog-meta-full">
+                        <span>October 10, 2023</span>
+                        <span>WordPress</span>
+                        <span>4 min read</span>
+                    </div>
+                    <div class="blog-article-content">
+                        <p>WordPress powers over 40% of all websites, making it crucial to understand how to optimize it for search engines. As a WordPress developer and SEO specialist in Sri Lanka, I've compiled the most effective strategies.</p>
+                        
+                        <h2>Essential WordPress SEO Practices</h2>
+                        <p>While WordPress is SEO-friendly out of the box, there are specific optimizations that can significantly boost your rankings.</p>
+                        
+                        <h3>Technical Optimizations:</h3>
+                        <ul>
+                            <li><strong>Permalink Structure:</strong> Use a clean, descriptive URL structure that includes keywords.</li>
+                            <li><strong>Site Speed:</strong> Optimize images, use caching, and choose a quality hosting provider.</li>
+                            <li><strong>Mobile Responsiveness:</strong> Ensure your theme is fully responsive across all devices.</li>
+                            <li><strong>XML Sitemaps:</strong> Generate and submit XML sitemaps to search engines.</li>
+                        </ul>
+                        
+                        <h3>Content Optimization:</h3>
+                        <ul>
+                            <li><strong>Quality Content:</strong> Create valuable, original content that addresses user intent.</li>
+                            <li><strong>Heading Structure:</strong> Use proper H1, H2, H3 tags to organize content logically.</li>
+                            <li><strong>Internal Linking:</strong> Connect related content to improve navigation and authority flow.</li>
+                            <li><strong>Image Optimization:</strong> Compress images and use descriptive alt text.</li>
+                        </ul>
+                        
+                        <h2>Recommended WordPress SEO Plugins</h2>
+                        <p>While there are many SEO plugins available, I typically recommend:</p>
+                        <ol>
+                            <li>Yoast SEO or Rank Math for comprehensive optimization</li>
+                            <li>WP Rocket or W3 Total Cache for performance</li>
+                            <li>Smush for image optimization</li>
+                            <li>Broken Link Checker for maintaining site health</li>
+                        </ol>
+                        
+                        <p>By implementing these WordPress SEO strategies, Sri Lankan businesses can significantly improve their online visibility and attract more qualified traffic to their websites.</p>
+                    </div>
+                `
+            },
+            {
+                id: 3,
+                title: "Local SEO Strategies for Sri Lankan Businesses",
+                excerpt: "Target local customers effectively with these proven local SEO techniques tailored for the Sri Lankan market.",
+                date: "October 5, 2023",
+                category: "Local SEO",
+                readTime: "6 min read",
+                image: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                content: `
+                    <h1>Local SEO Strategies for Sri Lankan Businesses</h1>
+                    <div class="blog-meta-full">
+                        <span>October 5, 2023</span>
+                        <span>Local SEO</span>
+                        <span>6 min read</span>
+                    </div>
+                    <div class="blog-article-content">
+                        <p>For businesses operating in Sri Lanka, local SEO is often the most effective way to attract customers. With the right strategies, you can appear in "near me" searches and Google's local pack results.</p>
+                        
+                        <h2>Why Local SEO Matters in Sri Lanka</h2>
+                        <p>With increasing smartphone penetration and mobile search usage, Sri Lankan consumers are frequently searching for local businesses. Appearing in these local search results can dramatically increase foot traffic and conversions.</p>
+                        
+                        <h3>Essential Local SEO Components:</h3>
+                        <ul>
+                            <li><strong>Google Business Profile:</strong> Claim and optimize your listing with accurate information, photos, and regular updates.</li>
+                            <li><strong>Local Citations:</strong> Ensure your business name, address, and phone number (NAP) are consistent across online directories.</li>
+                            <li><strong>Localized Content:</strong> Create content that addresses local needs, events, and search queries.</li>
+                            <li><strong>Local Link Building:</strong> Earn backlinks from other reputable Sri Lankan websites and local directories.</li>
+                        </ul>
+                        
+                        <h2>Optimizing for Sri Lankan Search Behavior</h2>
+                        <p>Understanding how Sri Lankan users search is key to effective local SEO:</p>
+                        <ol>
+                            <li>Include location-specific keywords (Colombo, Kandy, Galle, etc.) in your content</li>
+                            <li>Optimize for both Sinhala and English search queries when relevant</li>
+                            <li>Focus on mobile optimization since most local searches happen on smartphones</li>
+                            <li>Leverage local schema markup to provide search engines with precise location data</li>
+                        </ol>
+                        
+                        <h2>Measuring Local SEO Success</h2>
+                        <p>Track these key metrics to evaluate your local SEO performance:</p>
+                        <ul>
+                            <li>Local search rankings for important keywords</li>
+                            <li>Google Business Profile insights (views, actions)</li>
+                            <li>Website traffic from local sources</li>
+                            <li>Phone calls and direction requests from your listing</li>
+                        </ul>
+                        
+                        <p>By implementing these local SEO strategies, Sri Lankan businesses can connect with nearby customers at the moment they're ready to make a purchase decision.</p>
+                    </div>
+                `
+            },
+            {
+                id: 4,
+                title: "Technical SEO: A Comprehensive Guide",
+                excerpt: "Dive deep into the technical aspects of SEO that can make or break your website's performance.",
+                date: "September 28, 2023",
+                category: "Technical SEO",
+                readTime: "7 min read",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                content: `
+                    <h1>Technical SEO: A Comprehensive Guide</h1>
+                    <div class="blog-meta-full">
+                        <span>September 28, 2023</span>
+                        <span>Technical SEO</span>
+                        <span>7 min read</span>
+                    </div>
+                    <div class="blog-article-content">
+                        <p>Technical SEO forms the foundation of any successful optimization strategy. Without proper technical implementation, even the best content may struggle to rank.</p>
+                        
+                        <h2>What is Technical SEO?</h2>
+                        <p>Technical SEO refers to the process of optimizing your website's infrastructure to help search engines crawl, index, and understand your content more effectively.</p>
+                        
+                        <h3>Core Technical SEO Elements:</h3>
+                        <ul>
+                            <li><strong>Crawlability:</strong> Ensuring search engines can access and understand your site structure</li>
+                            <li><strong>Indexability:</strong> Controlling what pages search engines include in their indexes</li>
+                            <li><strong>Site Architecture:</strong> Organizing content in a logical, hierarchical structure</li>
+                            <li><strong>Page Speed:</strong> Optimizing loading times for both desktop and mobile users</li>
+                        </ul>
+                        
+                        <h2>Essential Technical SEO Checks</h2>
+                        <p>Every website should regularly audit these technical elements:</p>
+                        <ol>
+                            <li><strong>Robots.txt:</strong> Ensure it's properly configured to guide search engine crawlers</li>
+                            <li><strong>XML Sitemap:</strong> Create and submit a comprehensive sitemap to search engines</li>
+                            <li><strong>Canonical Tags:</strong> Implement correctly to avoid duplicate content issues</li>
+                            <li><strong>Structured Data:</strong> Add schema markup to help search engines understand your content</li>
+                            <li><strong>HTTPS:</strong> Ensure your site uses secure connections throughout</li>
+                            <li><strong>Mobile-Friendliness:</strong> Test and optimize for mobile users</li>
+                        </ol>
+                        
+                        <h2>Advanced Technical SEO Considerations</h2>
+                        <p>For more competitive niches, these advanced techniques can provide an edge:</p>
+                        <ul>
+                            <li>JavaScript rendering and indexing considerations</li>
+                            <li>International SEO and hreflang implementation</li>
+                            <li>Core Web Vitals optimization</li>
+                            <li>Site migration planning and execution</li>
+                        </ul>
+                        
+                        <p>Technical SEO might not be the most glamorous aspect of optimization, but it's absolutely essential for long-term success. By building a strong technical foundation, you create the conditions for all your other SEO efforts to flourish.</p>
+                    </div>
+                `
+            },
+            {
+                id: 5,
+                title: "Content Strategy for SEO: Beyond Keyword Stuffing",
+                excerpt: "Learn how to develop a content strategy that resonates with both users and search engines.",
+                date: "September 20, 2023",
+                category: "Content Strategy",
+                readTime: "5 min read",
+                image: "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                content: `
+                    <h1>Content Strategy for SEO: Beyond Keyword Stuffing</h1>
+                    <div class="blog-meta-full">
+                        <span>September 20, 2023</span>
+                        <span>Content Strategy</span>
+                        <span>5 min read</span>
+                    </div>
+                    <div class="blog-article-content">
+                        <p>Modern SEO has moved far beyond simple keyword targeting. Today, successful content strategy requires understanding user intent, creating comprehensive resources, and building topical authority.</p>
+                        
+                        <h2>The Evolution of Content in SEO</h2>
+                        <p>Google's algorithms have become increasingly sophisticated at understanding context, semantics, and user satisfaction. This means quality, relevance, and comprehensiveness matter more than ever.</p>
+                        
+                        <h3>Pillars of Modern Content Strategy:</h3>
+                        <ul>
+                            <li><strong>User Intent:</strong> Create content that directly addresses what users are looking for</li>
+                            <li><strong>Topical Authority:</strong> Cover subjects comprehensively to establish expertise</li>
+                            <li><strong>EEAT:</strong> Demonstrate Experience, Expertise, Authoritativeness, and Trustworthiness</li>
+                            <li><strong>Content Refresh:</strong> Regularly update and improve existing content</li>
+                        </ul>
+                        
+                        <h2>Building a Sustainable Content Strategy</h2>
+                        <p>Follow these steps to develop a content approach that delivers lasting results:</p>
+                        <ol>
+                            <li><strong>Audit Existing Content:</strong> Identify what's working and what needs improvement</li>
+                            <li><strong>Keyword and Topic Research:</strong> Find gaps in your coverage and new opportunities</li>
+                            <li><strong>Content Planning:</strong> Create a calendar that addresses different stages of the customer journey</li>
+                            <li><strong>Content Creation:</strong> Produce high-quality, original content that serves user needs</li>
+                            <li><strong>Promotion and Distribution:</strong> Ensure your content reaches the right audience</li>
+                            <li><strong>Performance Analysis:</strong> Measure what works and refine your approach</li>
+                        </ol>
+                        
+                        <h2>Content Formats That Perform Well in SEO</h2>
+                        <p>Diversify your content portfolio with these effective formats:</p>
+                        <ul>
+                            <li>Comprehensive guides and how-to articles</li>
+                            <li>Case studies and success stories</li>
+                            <li>Original research and data-driven content</li>
+                            <li>Product comparisons and reviews</li>
+                            <li>FAQ pages that answer common customer questions</li>
+                        </ul>
+                        
+                        <p>A strategic approach to content creation not only improves SEO performance but also builds brand authority, engages your audience, and drives meaningful business results.</p>
+                    </div>
+                `
+            },
+            {
+                id: 6,
+                title: "E-commerce SEO: Driving Traffic and Sales",
+                excerpt: "Optimize your online store for search engines to increase visibility, traffic, and conversions.",
+                date: "September 15, 2023",
+                category: "E-commerce SEO",
+                readTime: "6 min read",
+                image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                content: `
+                    <h1>E-commerce SEO: Driving Traffic and Sales</h1>
+                    <div class="blog-meta-full">
+                        <span>September 15, 2023</span>
+                        <span>E-commerce SEO</span>
+                        <span>6 min read</span>
+                    </div>
+                    <div class="blog-article-content">
+                        <p>E-commerce SEO presents unique challenges and opportunities. With the right approach, you can significantly increase organic traffic and sales for your online store.</p>
+                        
+                        <h2>E-commerce SEO Fundamentals</h2>
+                        <p>Successful e-commerce SEO requires attention to both technical elements and content strategy tailored to commercial intent.</p>
+                        
+                        <h3>Key E-commerce SEO Components:</h3>
+                        <ul>
+                            <li><strong>Product Page Optimization:</strong> Create unique, compelling product descriptions with relevant keywords</li>
+                            <li><strong>Category Page Strategy:</strong> Develop category pages that serve as comprehensive resource hubs</li>
+                            <li><strong>Site Architecture:</strong> Implement a logical hierarchy that helps users and search engines navigate your store</li>
+                            <li><strong>Internal Linking:</strong> Connect related products and categories to distribute authority</li>
+                        </ul>
+                        
+                        <h2>Technical Considerations for E-commerce Sites</h2>
+                        <p>E-commerce platforms often introduce specific technical challenges:</p>
+                        <ol>
+                            <li><strong>Duplicate Content:</strong> Manage product variations, filtered pages, and session IDs</li>
+                            <li><strong>Faceted Navigation:</strong> Implement proper handling of filter and sort parameters</li>
+                            <li><strong>Pagination:</strong> Use rel="next" and rel="prev" tags for paginated category pages</li>
+                            <li><strong>Site Speed:</strong> Optimize for fast loading, especially on product and checkout pages</li>
+                            <li><strong>Structured Data:</strong> Implement product schema markup to enhance search appearances</li>
+                        </ol>
+                        
+                        <h2>Content Strategy for E-commerce</h2>
+                        <p>Beyond product pages, develop additional content to attract and engage customers:</p>
+                        <ul>
+                            <li>Buying guides and product comparison articles</li>
+                            <li>How-to content related to your products</li>
+                            <li>Blog posts addressing customer questions and pain points</li>
+                            <li>Seasonal and trend-based content</li>
+                        </ul>
+                        
+                        <h2>Measuring E-commerce SEO Success</h2>
+                        <p>Track these key metrics to evaluate your e-commerce SEO performance:</p>
+                        <ul>
+                            <li>Organic traffic to product and category pages</li>
+                            <li>Conversion rates from organic search</li>
+                            <li>Average order value from organic visitors</li>
+                            <li>Return on investment from SEO activities</li>
+                        </ul>
+                        
+                        <p>By implementing a comprehensive e-commerce SEO strategy, online stores can reduce their dependence on paid advertising, build sustainable traffic sources, and increase profitability.</p>
+                    </div>
+                `
+            },
+            {
+                id: 7,
+                title: "Voice Search Optimization: The Next Frontier in SEO",
+                excerpt: "Prepare your website for the rise of voice search with these optimization techniques.",
+                date: "September 10, 2023",
+                category: "AI SEO",
+                readTime: "4 min read",
+                image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                content: `
+                    <h1>Voice Search Optimization: The Next Frontier in SEO</h1>
+                    <div class="blog-meta-full">
+                        <span>September 10, 2023</span>
+                        <span>AI SEO</span>
+                        <span>4 min read</span>
+                    </div>
+                    <div class="blog-article-content">
+                        <p>With the increasing adoption of smart speakers and voice assistants, voice search is becoming a critical component of modern SEO strategies.</p>
+                        
+                        <h2>Why Voice Search Matters</h2>
+                        <p>Voice search queries differ significantly from text-based searches. They tend to be longer, more conversational, and often phrased as questions.</p>
+                        
+                        <h3>Key Differences in Voice Search:</h3>
+                        <ul>
+                            <li><strong>Natural Language:</strong> Users speak in complete sentences rather than using fragmented keywords</li>
+                            <li><strong>Local Intent:</strong> Many voice searches have local intent ("near me" queries)</li>
+                            <li><strong>Question Format:</strong> Voice searches often begin with question words (who, what, where, when, why, how)</li>
+                            <li><strong>Featured Snippets:</strong> Voice assistants typically read from featured snippet positions</li>
+                        </ul>
+                        
+                        <h2>Optimizing for Voice Search</h2>
+                        <p>Follow these strategies to improve your website's performance in voice search results:</p>
+                        <ol>
+                            <li>Create content that answers specific questions directly and concisely</li>
+                            <li>Optimize for long-tail, conversational keywords</li>
+                            <li>Structure content using FAQ schema markup</li>
+                            <li>Ensure your website loads quickly on mobile devices</li>
+                            <li>Claim and optimize your Google Business Profile for local queries</li>
+                        </ol>
+                        
+                        <p>As voice search continues to grow in popularity, optimizing for this channel will become increasingly important for maintaining search visibility.</p>
+                    </div>
+                `
+            },
+            {
+                id: 8,
+                title: "Mobile-First Indexing: What You Need to Know",
+                excerpt: "Google's mobile-first indexing means your mobile site is now the primary version for ranking.",
+                date: "September 5, 2023",
+                category: "Technical SEO",
+                readTime: "5 min read",
+                image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                content: `
+                    <h1>Mobile-First Indexing: What You Need to Know</h1>
+                    <div class="blog-meta-full">
+                        <span>September 5, 2023</span>
+                        <span>Technical SEO</span>
+                        <span>5 min read</span>
+                    </div>
+                    <div class="blog-article-content">
+                        <p>Google's shift to mobile-first indexing means that the mobile version of your website is now the primary version used for ranking and indexing.</p>
+                        
+                        <h2>Understanding Mobile-First Indexing</h2>
+                        <p>With mobile-first indexing, Google predominantly uses the mobile version of your content for indexing and ranking. This change reflects the fact that most users now access Google via mobile devices.</p>
+                        
+                        <h3>Key Implications:</h3>
+                        <ul>
+                            <li><strong>Content Parity:</strong> Ensure your mobile site contains the same content as your desktop site</li>
+                            <li><strong>Structured Data:</strong> Include the same structured data on both mobile and desktop versions</li>
+                            <li><strong>Metadata:</strong> Make sure titles and meta descriptions are equivalent across both versions</li>
+                            <li><strong>Visual Content:</strong> Ensure images and videos are properly optimized for mobile</li>
+                        </ul>
+                        
+                        <h2>Mobile Optimization Best Practices</h2>
+                        <p>To succeed in a mobile-first world, focus on these optimization areas:</p>
+                        <ol>
+                            <li>Implement responsive design that works across all screen sizes</li>
+                            <li>Optimize page loading speed for mobile connections</li>
+                            <li>Ensure touch elements are appropriately sized and spaced</li>
+                            <li>Avoid intrusive interstitials that disrupt the mobile experience</li>
+                            <li>Test your mobile site using Google's Mobile-Friendly Test</li>
+                        </ol>
+                        
+                        <p>With mobile-first indexing now the standard, prioritizing mobile user experience is no longer optional—it's essential for SEO success.</p>
+                    </div>
+                `
+            },
+            {
+                id: 9,
+                title: "Building Quality Backlinks in 2023",
+                excerpt: "Effective strategies for earning high-quality backlinks that improve your domain authority.",
+                date: "August 28, 2023",
+                category: "Content Strategy",
+                readTime: "6 min read",
+                image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                content: `
+                    <h1>Building Quality Backlinks in 2023</h1>
+                    <div class="blog-meta-full">
+                        <span>August 28, 2023</span>
+                        <span>Content Strategy</span>
+                        <span>6 min read</span>
+                    </div>
+                    <div class="blog-article-content">
+                        <p>Backlinks remain one of Google's most important ranking factors. However, the approach to building them has evolved significantly over the years.</p>
+                        
+                        <h2>The Shift to Quality Over Quantity</h2>
+                        <p>Google's algorithms have become increasingly sophisticated at evaluating the quality and relevance of backlinks. Today, a few high-quality links from authoritative sites are more valuable than hundreds of low-quality links.</p>
+                        
+                        <h3>Characteristics of Quality Backlinks:</h3>
+                        <ul>
+                            <li><strong>Relevance:</strong> Links from websites in your industry or niche</li>
+                            <li><strong>Authority:</strong> Links from established, trusted websites</li>
+                            <li><strong>Context:</strong> Links placed within relevant content</li>
+                            <li><strong>Diversity:</strong> A natural mix of link types and sources</li>
+                        </ul>
+                        
+                        <h2>Effective Link Building Strategies</h2>
+                        <p>Modern link building focuses on creating value and building relationships:</p>
+                        <ol>
+                            <li><strong>Create Link-Worthy Content:</strong> Develop comprehensive resources, original research, or unique tools that naturally attract links</li>
+                            <li><strong>Guest Posting:</strong> Contribute high-quality articles to reputable websites in your industry</li>
+                            <li><strong>Broken Link Building:</strong> Identify broken links on relevant websites and suggest your content as a replacement</li>
+                            <li><strong>Digital PR:</strong> Develop newsworthy stories or data that journalists and bloggers will want to cover</li>
+                            <li><strong>Resource Pages:</strong> Identify resource pages in your niche and request inclusion</li>
+                        </ol>
+                        
+                        <p>By focusing on building genuine relationships and creating exceptional content, you can earn quality backlinks that drive sustainable SEO results.</p>
+                    </div>
+                `
+            },
+            {
+                id: 10,
+                title: "Core Web Vitals: Optimizing for User Experience",
+                excerpt: "Improve your website's Core Web Vitals to boost rankings and enhance user experience.",
+                date: "August 20, 2023",
+                category: "Technical SEO",
+                readTime: "5 min read",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                content: `
+                    <h1>Core Web Vitals: Optimizing for User Experience</h1>
+                    <div class="blog-meta-full">
+                        <span>August 20, 2023</span>
+                        <span>Technical SEO</span>
+                        <span>5 min read</span>
+                    </div>
+                    <div class="blog-article-content">
+                        <p>Core Web Vitals are a set of specific factors that Google considers important in a webpage's overall user experience.</p>
+                        
+                        <h2>Understanding Core Web Vitals</h2>
+                        <p>Core Web Vitals consist of three main metrics that measure loading performance, interactivity, and visual stability:</p>
+                        
+                        <h3>The Three Core Metrics:</h3>
+                        <ul>
+                            <li><strong>Largest Contentful Paint (LCP):</strong> Measures loading performance. To provide a good user experience, LCP should occur within 2.5 seconds of when the page first starts loading.</li>
+                            <li><strong>First Input Delay (FID):</strong> Measures interactivity. To provide a good user experience, pages should have an FID of less than 100 milliseconds.</li>
+                            <li><strong>Cumulative Layout Shift (CLS):</strong> Measures visual stability. To provide a good user experience, pages should maintain a CLS of less than 0.1.</li>
+                        </ul>
+                        
+                        <h2>Optimization Strategies</h2>
+                        <p>Improve your Core Web Vitals with these techniques:</p>
+                        <ol>
+                            <li><strong>For LCP:</strong> Optimize images, implement lazy loading, eliminate render-blocking resources, and use a CDN</li>
+                            <li><strong>For FID:</strong> Minimize JavaScript execution time, break up long tasks, and use a web worker</li>
+                            <li><strong>For CLS:</strong> Include size attributes for images and videos, reserve space for ads, and avoid inserting content above existing content</li>
+                        </ol>
+                        
+                        <p>By optimizing for Core Web Vitals, you not only improve your search rankings but also provide a better experience for your visitors, which can lead to higher engagement and conversions.</p>
+                    </div>
+                `
+            },
+            {
+                id: 11,
+                title: "SEO for Service-Based Businesses",
+                excerpt: "Tailored SEO strategies for service-based businesses to attract more clients online.",
+                date: "August 15, 2023",
+                category: "Local SEO",
+                readTime: "5 min read",
+                image: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                content: `
+                    <h1>SEO for Service-Based Businesses</h1>
+                    <div class="blog-meta-full">
+                        <span>August 15, 2023</span>
+                        <span>Local SEO</span>
+                        <span>5 min read</span>
+                    </div>
+                    <div class="blog-article-content">
+                        <p>Service-based businesses have unique SEO needs compared to e-commerce or content websites. The focus is on attracting local clients and establishing trust and authority.</p>
+                        
+                        <h2>Key SEO Strategies for Service Businesses</h2>
+                        <p>Service businesses should focus on these core areas to improve their online visibility and attract more clients:</p>
+                        
+                        <h3>Essential Components:</h3>
+                        <ul>
+                            <li><strong>Local SEO Optimization:</strong> Claim and optimize your Google Business Profile, build local citations, and target location-specific keywords</li>
+                            <li><strong>Service Page Optimization:</strong> Create dedicated pages for each service you offer with detailed information and relevant keywords</li>
+                            <li><strong>Review Management:</strong> Encourage and respond to customer reviews to build trust and improve local rankings</li>
+                            <li><strong>Content Marketing:</strong> Create helpful content that addresses common customer questions and pain points</li>
+                        </ul>
+                        
+                        <h2>Building Trust and Authority</h2>
+                        <p>For service businesses, establishing trust is crucial for converting website visitors into clients:</p>
+                        <ol>
+                            <li>Display certifications, awards, and professional affiliations</li>
+                            <li>Include case studies and before/after examples of your work</li>
+                            <li>Feature testimonials and client success stories prominently</li>
+                            <li>Create an "About Us" page that highlights your expertise and experience</li>
+                            <li>Ensure your website has clear contact information and calls-to-action</li>
+                        </ol>
+                        
+                        <p>By implementing these strategies, service-based businesses can improve their online visibility, attract more qualified leads, and ultimately grow their client base.</p>
+                    </div>
+                `
+            },
+            {
+                id: 12,
+                title: "Structured Data and Schema Markup for SEO",
+                excerpt: "Implement structured data to help search engines understand your content and enhance search results.",
+                date: "August 10, 2023",
+                category: "Technical SEO",
+                readTime: "6 min read",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                content: `
+                    <h1>Structured Data and Schema Markup for SEO</h1>
+                    <div class="blog-meta-full">
+                        <span>August 10, 2023</span>
+                        <span>Technical SEO</span>
+                        <span>6 min read</span>
+                    </div>
+                    <div class="blog-article-content">
+                        <p>Structured data, implemented through schema markup, helps search engines understand the content on your pages and can lead to enhanced search results.</p>
+                        
+                        <h2>What is Structured Data?</h2>
+                        <p>Structured data is a standardized format for providing information about a page and classifying the page content. When information is presented in a consistent, predictable way, search engines can more easily understand and display it in search results.</p>
+                        
+                        <h3>Benefits of Implementing Schema Markup:</h3>
+                        <ul>
+                            <li><strong>Rich Results:</strong> Eligibility for enhanced search results like rich snippets, knowledge panels, and carousels</li>
+                            <li><strong>Better Understanding:</strong> Helps search engines understand the context and meaning of your content</li>
+                            <li><strong>Voice Search:</strong> Improves performance in voice search results</li>
+                            <li><strong>Competitive Advantage:</strong> Can help your listings stand out in search results</li>
+                        </ul>
+                        
+                        <h2>Common Schema Types</h2>
+                        <p>Some of the most useful schema types for SEO include:</p>
+                        <ol>
+                            <li><strong>Article:</strong> For blog posts, news articles, and other written content</li>
+                            <li><strong>Local Business:</strong> For businesses with physical locations</li>
+                            <li><strong>Product:</strong> For e-commerce product pages</li>
+                            <li><strong>FAQ:</strong> For frequently asked questions pages</li>
+                            <li><strong>How-to:</strong> For step-by-step instructional content</li>
+                            <li><strong>Review:</strong> For product, service, or business reviews</li>
+                        </ol>
+                        
+                        <p>By implementing appropriate schema markup, you can help search engines better understand your content and potentially improve your visibility in search results.</p>
+                    </div>
+                `
+            }
+        ];
+
+        // DOM elements
+        const header = document.getElementById('header');
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        const blogGrid = document.getElementById('blogGrid');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const paginationScroller = document.getElementById('paginationScroller');
+        const blogModal = document.getElementById('blogModal');
+        const modalBody = document.getElementById('modalBody');
+        const closeBtn = document.querySelector('.close-btn');
+
+        // Configuration
+        const postsPerPage = 6;
+        let currentPage = 1;
+        let currentFilter = 'all';
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+        });
+
+        // Load blog posts with pagination
+        function loadBlogPosts(page = 1, filter = 'all') {
+            let filteredPosts = blogPosts;
+            
+            if (filter !== 'all') {
+                filteredPosts = blogPosts.filter(post => post.category === filter);
+            }
+            
+            const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+            const startIndex = (page - 1) * postsPerPage;
+            const endIndex = startIndex + postsPerPage;
+            const postsToShow = filteredPosts.slice(startIndex, endIndex);
+            
+            // Render blog posts
+            blogGrid.innerHTML = postsToShow.map(post => `
+                <div class="blog-card" data-id="${post.id}">
+                    <div class="blog-image">
+                        <img src="${post.image}" alt="${post.title}">
+                        <div class="blog-category">${post.category}</div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span>${post.date}</span>
+                            <span>${post.readTime}</span>
+                        </div>
+                        <h3>${post.title}</h3>
+                        <p class="blog-excerpt">${post.excerpt}</p>
+                        <a href="#" class="read-more" data-id="${post.id}">Read More</a>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add event listeners to blog cards and read more links
+            document.querySelectorAll('.blog-card, .read-more').forEach(element => {
+                element.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const postId = parseInt(element.getAttribute('data-id'));
+                    openBlogModal(postId);
+                });
+            });
+            
+            // Render pagination
+            renderPagination(totalPages, page);
+        }
+
+        // Render pagination scroller
+        function renderPagination(totalPages, currentPage) {
+            let paginationHTML = '';
+            
+            // Previous button
+            if (currentPage > 1) {
+                paginationHTML += `<div class="page-number" data-page="${currentPage - 1}">←</div>`;
+            }
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    paginationHTML += `<div class="page-number active" data-page="${i}">${i}</div>`;
+                } else {
+                    paginationHTML += `<div class="page-number" data-page="${i}">${i}</div>`;
+                }
+            }
+            
+            // Next button
+            if (currentPage < totalPages) {
+                paginationHTML += `<div class="page-number" data-page="${currentPage + 1}">→</div>`;
+            }
+            
+            paginationScroller.innerHTML = paginationHTML;
+            
+            // Add event listeners to pagination numbers
+            document.querySelectorAll('.page-number').forEach(pageEl => {
+                pageEl.addEventListener('click', () => {
+                    const page = parseInt(pageEl.getAttribute('data-page'));
+                    loadBlogPosts(page, currentFilter);
+                    window.scrollTo({ top: blogGrid.offsetTop - 100, behavior: 'smooth' });
+                });
+            });
+        }
+
+        // Open blog modal
+        function openBlogModal(postId) {
+            const post = blogPosts.find(p => p.id === postId);
+            if (post) {
+                modalBody.innerHTML = `
+                    <article class="blog-article">
+                        ${post.content}
+                    </article>
+                `;
+                blogModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // Close blog modal
+        closeBtn.addEventListener('click', () => {
+            blogModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === blogModal) {
+                blogModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Filter blog posts
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                // Filter posts
+                currentFilter = btn.getAttribute('data-filter');
+                currentPage = 1;
+                loadBlogPosts(currentPage, currentFilter);
+            });
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBlogPosts();
+        });
+    </script>
+</body>
+</html>
