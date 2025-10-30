@@ -26,10 +26,6 @@ html {
 body {
     font-family: "Inter", sans-serif;
     background-color: var(--dark-blue);   
-    /*opacity: 0.9;
-    background-image:  radial-gradient(var(--light-blue) 0.9px, transparent 0.9px), radial-gradient(var(--white) 0.9px, var(--dark-blue) 0.9px);
-    background-size: 20px 20px;
-    background-position: 0 0,10px 10px;*/
     color: var(--white);
     line-height: 1.6;
     overflow-x: hidden;
