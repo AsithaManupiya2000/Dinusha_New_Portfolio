@@ -243,13 +243,13 @@ nav {
     width: 30%;
     position: sticky;
     top: 120px;
-    height: 80vh;
-    margin-bottom: 40px; 
+    height: auto; 
     align-self: flex-start;
     display: flex;
     flex-direction: column;
+    overflow: visible; 
+    margin-bottom: clamp(1rem, 3vh, 4rem); 
 }
-
 .author-card {
     background-color: var(--charcoal);
     border-radius: 10px;

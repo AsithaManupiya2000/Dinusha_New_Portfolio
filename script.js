@@ -15,6 +15,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
+// Add subtle animation to certification cards
+document.addEventListener('DOMContentLoaded', function() {
+    const certCards = document.querySelectorAll('.certification-card');
+    
+    certCards.forEach((card, index) => {
+        // Add delay for staggered animation
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.classList.add('fade-in-up');
+    });
+});
+
     // ========== BLOG DATA ==========
     const blogPosts = [
         {
@@ -2045,3 +2056,4 @@ const globalStyles = `
 const styleElement = document.createElement('style');
 styleElement.textContent = globalStyles;
 document.head.appendChild(styleElement);
+
